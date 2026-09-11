@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Toshkent hub uchun tirkama almashtirish (drop &amp; hook) modeli: uchta marshrut, jonli tizim simulyatsiyasi, vaqt taqqoslashi va park hisobi.">
+<meta name="description" content="Toshkent hub uchun tirkama almashtirish (drop &amp; hook) modeli: uchta marshrut, jonli tizim simulyatsiyasi, xavflar, marshrut narxlari va park hisobi.">
 <meta property="og:title" content="Tigach Kutmaydi">
-<meta property="og:description" content="Tirkama almashtirish modeli — Toshkent hub, jonli simulyatsiya.">
+<meta property="og:description" content="Tirkama almashtirish modeli — Toshkent hub, jonli simulyatsiya, marshrut iqtisodi.">
 <meta property="og:type" content="website">
 <style>html{color-scheme:dark}body{margin:0}img{max-width:100%}</style>
 <title>Tigach Kutmaydi</title>
@@ -171,6 +171,33 @@ ul.plain{margin:0 0 14px; padding-left:20px; max-width:66ch}
 ul.plain li{margin-bottom:9px; color:var(--ink2)}
 ul.plain li strong{color:var(--ink)}
 
+/* xavf kartochkalari */
+.rt-tbl{margin:0 0 18px; font-size:13px}
+.rt-tbl td{padding:8px 0; border-bottom:1px solid var(--line); color:var(--ink2); text-align:left}
+.rt-tbl td:last-child{text-align:right; color:var(--ink); font-family:"IBM Plex Mono",monospace;
+  font-size:12px; white-space:nowrap; padding-left:12px}
+.rt-tbl tfoot td{border-bottom:none; border-top:1px solid var(--muted); font-weight:600;
+  color:var(--ink); padding-top:10px}
+.rt-sub{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); margin:18px 0 8px}
+.rt-list{list-style:none; margin:0; padding:0}
+.rt-list li{position:relative; padding:5px 0 5px 14px; font-size:13.5px; color:var(--ink2); line-height:1.5}
+.rt-list li::before{content:"–"; position:absolute; left:0; color:var(--muted)}
+.rt-list li strong{color:var(--ink)}
+ol.rt-num{margin:0; padding:0; list-style:none; counter-reset:rn}
+ol.rt-num li{display:block; counter-increment:rn; position:relative; padding:9px 0 9px 24px;
+  border-top:none; border-bottom:1px solid var(--line); font-size:13.5px;
+  color:var(--ink2); line-height:1.55}
+ol.rt-num li::before{content:counter(rn); position:absolute; left:0; top:9px;
+  font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--muted)}
+.rt-case{display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:start;
+  padding:11px 0; border-bottom:1px solid var(--line)}
+.rt-case p{margin:0; font-size:13.5px; color:var(--ink2); line-height:1.5}
+.rt-chip{font-family:"IBM Plex Mono",monospace; font-size:9.5px; letter-spacing:.11em;
+  padding:4px 9px; font-weight:600; white-space:nowrap}
+.rt-chip.wait{background:var(--wait-dim); color:var(--wait)}
+.rt-chip.hub{background:var(--hub-dim); color:var(--hub)}
+
 footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
   font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--muted); line-height:1.95}
 
@@ -203,7 +230,7 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
   <div class="sec-head">
     <span class="sec-n">01</span>
     <h2>Tizim · jonli simulyatsiya</h2>
-    <p class="sec-dek">Bitta mashina emas — butun tizim bir vaqtda. 100 tirkamali park, 3 shuttle tigach, 10 magistral tigach, 1 to'g'ridan-to'g'ri va 3 lokal tigach — 17 ta transport bir vaqtda. Toshkent–Vodiy oralig'i 10 soat. Har bir transport ustida nima qilayotgani yozilib turadi. Vaqt muhrlari haqiqiy: navbat ~8 soat, yuklash 1 soat, tushirish 10 soat, tirkama almashtirish 15 daqiqa.</p>
+    <p class="sec-dek">Bitta mashina emas — butun tizim bir vaqtda. 100 tirkamali park, 3 shuttle tigach, 10 magistral tigach, 1 to'g'ridan-to'g'ri va 3 lokal tigach — 17 ta transport bir vaqtda. Qaytish yuki hubga emas, Toshkentdagi qabul nuqtasiga tushiriladi. Toshkent–Vodiy oralig'i 10 soat. Har bir transport ustida nima qilayotgani yozilib turadi. Vaqt muhrlari haqiqiy: navbat ~8 soat, yuklash 1 soat, tushirish 10 soat, tirkama almashtirish 15 daqiqa.</p>
   </div>
 
   <div class="sim">
@@ -242,6 +269,10 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
         <text x="1056" y="472" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".8">LOKAL</text>
         <text x="1056" y="485" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".8">30 daq</text>
         <text x="340" y="510" fill="#2FD3C0" font-family="IBM Plex Mono, monospace" font-size="10" letter-spacing="1.4" opacity=".85">QAYTISH YUKI MANBALARI</text>
+
+        <!-- TOSHKENT QABUL tarmog'i -->
+        <line x1="560" y1="278" x2="560" y2="380" stroke="#26313D" stroke-width="13" stroke-linecap="round"/>
+        <line x1="560" y1="278" x2="560" y2="380" stroke="#2FD3C0" stroke-width="1.2" stroke-dasharray="5 8" opacity=".45"/>
 
         <!-- ZAVOD -->
         <rect x="80" y="40" width="200" height="100" fill="#151C24" stroke="#E4352B" stroke-width="1"/>
@@ -287,7 +318,7 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
         <rect x="890" y="300" width="210" height="112" fill="#151C24" stroke="#F0A339" stroke-width="1"/>
         <rect x="890" y="300" width="210" height="3" fill="#F0A339"/>
         <text x="904" y="327" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="17" letter-spacing=".5">DISTRIBUTOR</text>
-        <text x="904" y="342" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".8">FARG'ONA · NAMANGAN</text>
+        <text x="904" y="342" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".8">FARG'ONA · NAMANGAN · ANDIJON</text>
         <g font-family="IBM Plex Mono, monospace" font-size="10">
           <text x="904" y="362" fill="#4C5B6C" letter-spacing=".6">TUSHIRISHDA</text>
           <text x="1086" y="362" fill="#F0A339" text-anchor="end" id="d-unload" font-weight="600">0</text>
@@ -326,6 +357,20 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
         <text x="1073" y="595" fill="#2FD3C0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" font-weight="600" id="src3">0</text>
         <text x="933" y="607" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing=".6">NAVBATDA</text>
         <text x="1073" y="607" fill="#9DB0C4" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" font-weight="600" id="srq3">0</text>
+        <!-- TOSHKENT QABUL -->
+        <rect x="455" y="182" width="210" height="96" fill="#151C24" stroke="#2FD3C0" stroke-width="1"/>
+        <rect x="455" y="182" width="210" height="3" fill="#2FD3C0"/>
+        <text x="469" y="209" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="16" letter-spacing=".5">TOSHKENT QABUL</text>
+        <text x="469" y="224" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".8">QAYTISH YUKI TUSHIRILADI</text>
+        <g font-family="IBM Plex Mono, monospace" font-size="10">
+          <text x="469" y="245" fill="#4C5B6C" letter-spacing=".6">TUSHIRISHDA</text>
+          <text x="651" y="245" fill="#F0A339" text-anchor="end" id="t-unload" font-weight="600">0</text>
+          <text x="469" y="261" fill="#4C5B6C" letter-spacing=".6">BO'SHAGAN</text>
+          <text x="651" y="261" fill="#9DB0C4" text-anchor="end" id="t-empty" font-weight="600">0</text>
+        </g>
+        <text x="672" y="245" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9">Hubga emas —</text>
+        <text x="672" y="257" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9">mijoz omboriga</text>
+
         <!-- vehicles -->
         <g id="veh"></g>
       </svg>
@@ -555,17 +600,31 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
 
     <circle cx="960" cy="100" r="9" fill="#F0A339"/>
     <text x="960" y="78" text-anchor="middle" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="14">VODIY</text>
-    <text x="960" y="128" text-anchor="middle" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9.5">FARG'ONA / NAMANGAN</text>
+    <text x="960" y="128" text-anchor="middle" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9.5">FARG'ONA / NAMANGAN / ANDIJON</text>
 
     <text x="130" y="94" text-anchor="middle" fill="#B9C6D2" font-family="IBM Plex Mono, monospace" font-size="10.5">6 km</text>
     <text x="130" y="108" text-anchor="middle" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9.5">13 daq</text>
 
-    <text x="625" y="94" text-anchor="middle" fill="#B9C6D2" font-family="IBM Plex Mono, monospace" font-size="10.5">286 km — Farg'ona · 10 soat</text>
-    <text x="625" y="108" text-anchor="middle" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9.5">302 km — Namangan · ~10 soat · Qamchiq dovoni, nazorat postlari</text>
+    <text x="625" y="94" text-anchor="middle" fill="#B9C6D2" font-family="IBM Plex Mono, monospace" font-size="10.5">286–370 km · har uchala manzilga ~10 soat</text>
+    <text x="625" y="108" text-anchor="middle" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9.5">Qamchiq dovoni, nazorat postlari va to'xtashlar bilan</text>
 
     <text x="0" y="176" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="10">Masofalar foydalanuvchi bergan marshrut kartalaridan olingan.</text>
   </svg>
   </div>
+
+  <div class="scroller">
+  <table>
+    <caption>Hubdan manzillargacha</caption>
+    <thead><tr><th>Yo'nalish</th><th>Masofa</th><th>Yo'l vaqti</th><th>Bugungi qaytish koeffitsiyenti</th></tr></thead>
+    <tbody>
+      <tr><td class="k">Hub → Coca-Cola zavodi</td><td>6 km</td><td>13 daqiqa</td><td>—</td></tr>
+      <tr><td class="k">Hub → Farg'ona</td><td>286 km</td><td>~10 soat</td><td class="bad">17,0%</td></tr>
+      <tr><td class="k">Hub → Namangan</td><td>302 km</td><td>~10 soat</td><td class="good">42,6%</td></tr>
+      <tr><td class="k">Hub → Andijon</td><td>~370 km</td><td>~10 soat</td><td class="bad">15,2%</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="margin-top:12px; color:var(--muted); font-size:13.5px">Farg'ona va Namangan masofalari foydalanuvchi bergan marshrut kartalaridan. Andijon masofasi taxminiy — aniq raqamni tasdiqlash kerak. Qaytish koeffitsiyentlari 78 790 reysli reyestrdan (2025-10 → 2026-09).</p>
 
   <h3>Hub nima uchun kerak</h3>
   <ul class="plain">
@@ -618,14 +677,168 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
   </div>
 
   <div class="note">
-    <p><strong>Bog'lanish.</strong> Avvalgi tahlilda Andijon yo'nalishida qaytish atigi 15,2%, Namanganda esa 42,6% ekani chiqqan edi. Farq — jo'natuvchi bazasida. Tirkama almashtirish modeli bu bazani ishlatish uchun texnik imkon yaratadi: hududda oldindan yuklangan tirkama tursa, uni olib ketish 15 daqiqa turadi, 10 soat emas.</p>
+    <p><strong>Andijon — eng qiyin yo'nalish.</strong> Reyestrda Andijon bo'yicha qaytish atigi 15,2%, Namanganda esa 42,6%. Undan ham yomoni: Andijondan Toshkentga qaytgan 558 reysning 204 tasi (37%) — bo'sh paddon, ya'ni tijorat yuki emas. Sof tijorat qaytishi 9,6%. Farq — jo'natuvchi bazasida. Tirkama almashtirish modeli bu bazani ishlatish uchun texnik imkon yaratadi: hududda oldindan yuklangan tirkama tursa, uni olib ketish 15 daqiqa turadi, 10 soat emas.</p>
   </div>
 </section>
 
-<!-- ============== 07 JORIY ETISH ============== -->
+<!-- ============== 07 XAVFLAR ============== -->
 <section>
   <div class="sec-head">
     <span class="sec-n">07</span>
+    <h2>Xavflar va nazorat</h2>
+    <p class="sec-dek">Tirkama tortuvchidan ajratilgach uchta yangi xavf paydo bo'ladi. Bular bizda allaqachon mavjud muammolar — modelni joriy etishdan oldin har biriga javob kerak.</p>
+  </div>
+
+  <div class="routes">
+
+    <div class="rt">
+      <div class="rt-n c-wait">XAVF 1 · UZEL</div>
+      <h4>Uzel o'g'irlanishi yoki almashtirilishi</h4>
+      <p>Qarovsiz turgan tirkamadagi eng qimmat uchta uzel.</p>
+      <table class="rt-tbl">
+        <tbody>
+          <tr><td>Havo balonlari</td><td>6 dona · 300 $</td></tr>
+          <tr><td>Tirkama «miyasi» — EBS/ABS bloki</td><td>1 800–2 000 $</td></tr>
+          <tr><td>Havo taqsimlovchi qurilma</td><td>800 $</td></tr>
+        </tbody>
+        <tfoot><tr><td>Bir tirkamadagi xavf ostidagi qiymat</td><td class="bad">≈ 3 100 $</td></tr></tfoot>
+      </table>
+      <div class="rt-sub">Nazorat</div>
+      <ul class="rt-list">
+        <li>Topshirish va qabulda uzel raqamlari fotosurat bilan aktga yoziladi</li>
+        <li>Plomba va belgi; har aylanmadan keyin ko'rik</li>
+        <li>Yo'qolgan yoki eskisiga almashtirilgan uzel tortuvchi egasi hisobiga</li>
+        <li>Telematika: havo bosimi va tormoz tizimi uzoqdan kuzatiladi</li>
+      </ul>
+    </div>
+
+    <div class="rt">
+      <div class="rt-n c-hub">XAVF 2 · HUJJAT</div>
+      <h4>Uchta hujjat muammosi</h4>
+      <ol class="rt-num">
+        <li>Tigach va tirkama bitta firma balansida bo'lishi; tigach egasi bilan ijara shartnomasi rasmiylashtirilgan bo'lishi shart.</li>
+        <li>Haydovchi firma tomonidan ishga olingan va unga ishonchnoma berilgan bo'lishi shart.</li>
+        <li>TTNdagi mashina raqami olib ketayotgan tigach raqamiga mos kelishi shart.</li>
+      </ol>
+      <div class="rt-sub">Mos kelmasa</div>
+      <ul class="rt-list">
+        <li>Mashina jarima maydoniga tortiladi</li>
+        <li>Boshqa tigach yuboriladi, tirkamani ulab reysni davom ettiradi</li>
+        <li>TTN yangi tigach raqamiga qayta rasmiylashtiriladi</li>
+        <li><strong>Oldini olish:</strong> tigach almashgan zahoti dispetcher TTNni yangilaydi; yo'lga chiqishdan oldin raqam, shartnoma va ishonchnoma avtomatik tekshiriladi</li>
+      </ul>
+    </div>
+
+    <div class="rt">
+      <div class="rt-n c-move">XAVF 3 · YO'LDA</div>
+      <h4>Noxush holat bo'lsa</h4>
+      <div class="rt-case">
+        <span class="rt-chip wait">TIRKAMA</span>
+        <p>24/7 mobil servis chiqadi: g'ildirak, tormoz, havo tizimi, elektr. Joyida tuzatilmasa tirkama almashtiriladi.</p>
+      </div>
+      <div class="rt-case">
+        <span class="rt-chip hub">TIGACH</span>
+        <p>Xizmat mashinasi yetib boradi, tirkamani ulab yo'lni davom ettiradi. Buzilgan tigach servisga.</p>
+      </div>
+      <div class="rt-sub">Nega bu ishlaydi</div>
+      <ul class="rt-list">
+        <li>Yuk hech qachon buzilgan mashina bilan yo'lda qolmaydi — tirkama va tortuvchi ajratilgani aynan shuni beradi</li>
+        <li>Hodisa dispetcherga yoziladi, mijozga yangi ETA yuboriladi</li>
+        <li>Takrorlanuvchi nosozlik tirkama yoki tortuvchi kartochkasiga yoziladi va TO grafigini o'zgartiradi</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="note w">
+    <p><strong>Bu uchtasi modelning shartidir, qo'shimchasi emas.</strong> Klassik modelda tirkama hech qachon qarovsiz qolmaydi va TTN hech qachon boshqa raqamga o'tmaydi — chunki tigach doim yonida. Drop &amp; hook bu ikkalasini ham buzadi. Shuning uchun uzel akti, telematika va TTNni avtomatik yangilash — pilotdan oldin tayyor bo'lishi kerak.</p>
+    <p>Yiliga 10 reys/kun rejimida 17 ta tirkama aylanadi. Uzel bo'yicha xavf ostidagi umumiy qiymat <strong>≈ 53 000 $</strong> — bitta o'g'irlik emas, doimiy nazorat masalasi.</p>
+  </div>
+</section>
+
+<!-- ============== 08 NARX ============== -->
+<section>
+  <div class="sec-head">
+    <span class="sec-n">08</span>
+    <h2>Marshrut iqtisodi</h2>
+    <p class="sec-dek">Barcha tariflar 78 790 reysli reyestrdan olingan mediana qiymatlar. Narx reyslarning 6,3% ida qayd etilgan, shuning uchun bular yo'nalish darajasidagi mo'ljal — shartnoma narxi emas.</p>
+  </div>
+
+  <h3>A · Mijoz tarifi — yo'nalishlar bo'yicha</h3>
+  <div class="scroller">
+  <table>
+    <caption>Bir FURA reysi · so'm · mediana</caption>
+    <thead><tr><th>Yo'nalish</th><th>Chiqish (Toshkentdan)</th><th>Qaytish (Toshkentga)</th><th>To'liq sikl</th><th>Bo'sh qaytsa yo'qoladi</th><th>Yozuv</th></tr></thead>
+    <tbody>
+      <tr><td class="k">Toshkent ↔ Andijon</td><td>3 500 000</td><td>2 992 800</td><td class="good">6 492 800</td><td class="bad">2 992 800</td><td>151 / 150</td></tr>
+      <tr><td class="k">Toshkent ↔ Farg'ona</td><td>3 200 000</td><td>2 525 000</td><td class="good">5 725 000</td><td class="bad">2 525 000</td><td>472 / 565</td></tr>
+      <tr><td class="k">Toshkent ↔ Namangan</td><td>3 050 000</td><td>1 400 000*</td><td>4 450 000</td><td>1 400 000</td><td>96 / 6*</td></tr>
+    </tbody>
+    <tfoot><tr><td>O'rtacha (barcha vodiy)</td><td>3 200 000</td><td>2 741 200</td><td>5 941 200</td><td>2 741 200</td><td>719 / 721</td></tr></tfoot>
+  </table>
+  </div>
+  <p style="margin-top:12px; color:var(--muted); font-size:13.5px">* Namangan qaytish narxi atigi 6 ta yozuvdan hisoblangan — bu raqamga tayanmaslik kerak. Amalda Namangan qaytish hajmi eng katta (1 907 reys), lekin narxlar bazaga kiritilmagan.</p>
+
+  <h3>B · Ikki usul — narx qayerga ketadi</h3>
+  <div class="scroller">
+  <table>
+    <caption>Toshkent → Andijon misolida · bir yuk</caption>
+    <thead><tr><th>Ko'rsatkich</th><th>Usul A · to'g'ridan-to'g'ri</th><th>Usul B · hub orqali</th></tr></thead>
+    <tbody>
+      <tr><td class="k">Mijoz to'laydi</td><td>3 500 000</td><td>3 500 000</td></tr>
+      <tr><td class="k">Zavod → Hub (6 km)</td><td>—</td><td>ichki operatsiya, alohida hisoblanmaydi</td></tr>
+      <tr><td class="k">Hub → Andijon (magistral)</td><td>—</td><td>butun masofa</td></tr>
+      <tr><td class="k">Magistral tigach vaqti</td><td class="good">20 s 30 daq</td><td class="good">20 s 30 daq</td></tr>
+      <tr><td class="k">Qo'shimcha shuttle vaqti</td><td class="good">0</td><td>0 s 56 daq (+4,5%)</td></tr>
+      <tr><td class="k">Tejaladigan vaqt</td><td class="good">43 daqiqa</td><td>—</td></tr>
+      <tr><td class="k">Zavod navbatiga bog'liqlik</td><td class="bad">bor — tigach kutadi</td><td class="good">yo'q — bufer ajratadi</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note">
+    <p><strong>Asosiy jumla: mijoz tarifi ikkala usulda ham bir xil.</strong> Hub oralig'i alohida sotilmaydi — u ichki operatsiya. Uning narxi bir yukka <strong>56 daqiqa shuttle vaqti</strong>, ya'ni magistral tigachning 20 s 30 daqiqasiga nisbatan <strong>+4,5%</strong> tigach-soat. Buning evaziga magistral tigach 8 soatlik zavod navbatidan butunlay xalos bo'ladi.</p>
+    <p>Usul A tezroq (43 daqiqa), lekin u faqat viloyat tigachi to'g'ri vaqtda zavodda bo'lsa ishlaydi. Usul B har doim ishlaydi — shuning uchun asosiy usul B, A esa bonus.</p>
+  </div>
+
+  <h3>C · Qaytish yuki manbalari — tarif</h3>
+  <div class="scroller">
+  <table>
+    <caption>Vodiydan Toshkentga · mediana · so'm</caption>
+    <thead><tr><th>Manba</th><th>Yo'nalish</th><th>Tarif</th><th>Baza</th><th>Izoh</th></tr></thead>
+    <tbody>
+      <tr><td class="k">Sement</td><td>Andijon → Toshkent</td><td class="good">2 992 800</td><td>n = 148</td><td style="text-align:left">Isbotlangan: 2025-11 da 134 reys</td></tr>
+      <tr><td class="k">Sement</td><td>Qo'qon → Toshkent</td><td class="good">2 528 000</td><td>n = 567</td><td style="text-align:left">Eng katta hajm</td></tr>
+      <tr><td class="k">Kafel / keramika</td><td>Vodiy → Toshkent</td><td>2 500 000 – 3 000 000</td><td>taxmin</td><td style="text-align:left">Bazada alohida narx yo'q</td></tr>
+      <tr><td class="k">Chortoq · mineral suv</td><td>Namangan → Toshkent</td><td>narx yozilmagan</td><td>580 reys</td><td style="text-align:left">Hajm bor, narx bazaga kirmagan</td></tr>
+      <tr><td class="k">To'qimachilik</td><td>Vodiy → Toshkent</td><td>narx yozilmagan</td><td>39 reys</td><td style="text-align:left">Global Textile VST</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="margin-top:12px; color:var(--muted); font-size:13.5px">Qaytish tarifi chiqish tarifidan o'rtacha 14% past (2 741 200 va 3 200 000). Backhaul uchun bu yetarli: mashina baribir qaytadi, shuning uchun past tarifdagi yuk ham sof qo'shimcha daromad.</p>
+
+  <h3>D · Kunlik va yillik hisob</h3>
+  <div class="scroller">
+  <table>
+    <caption>Kuniga 10 reys Toshkent → Vodiy · o'rtacha tarif bo'yicha</caption>
+    <thead><tr><th>Ssenariy</th><th>Chiqish daromadi / kun</th><th>Qaytish daromadi / kun</th><th>Jami / kun</th><th>Yillik</th></tr></thead>
+    <tbody>
+      <tr><td class="k">Bo'sh qaytish (hozirgi 7,4%)</td><td>32,0 mln</td><td class="bad">2,0 mln</td><td>34,0 mln</td><td>12,4 mlrd</td></tr>
+      <tr><td class="k">Qaytish 40%</td><td>32,0 mln</td><td>11,0 mln</td><td class="good">43,0 mln</td><td class="good">15,7 mlrd</td></tr>
+      <tr><td class="k">Qaytish 50% (simulyatsiyadagi daraja)</td><td>32,0 mln</td><td>13,7 mln</td><td class="good">45,7 mln</td><td class="good">16,7 mlrd</td></tr>
+      <tr><td class="k">Qaytish 100% (nazariy shift)</td><td>32,0 mln</td><td>27,4 mln</td><td>59,4 mln</td><td>21,7 mlrd</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note">
+    <p><strong>7,4% dan 50% ga chiqish yiliga ≈ 4,3 mlrd so'm qo'shimcha daromad beradi</strong> — yangi mijozsiz, yangi mashinasiz, faqat qaytish yukini ulash hisobiga. Hisob: har kuni 4,3 ta qo'shimcha qaytish reysi × 2 741 200 so'm × 365 kun.</p>
+    <p>Bunga park tejami qo'shiladi: 16 ta avtopoyezd o'rniga 10 ta tigach — 6 ta tigachning lizingi, yoqilg'isi va haydovchisi ortiqcha bo'ladi.</p>
+  </div>
+</section>
+
+<!-- ============== 09 JORIY ETISH ============== -->
+<section>
+  <div class="sec-head">
+    <span class="sec-n">09</span>
     <h2>Joriy etish</h2>
     <p class="sec-dek">Butun parkni birdan o'tkazish shart emas. Model bitta yo'nalishda sinab ko'riladi va natija o'lchanadi.</p>
   </div>
@@ -656,7 +869,7 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
       <div class="rt-n c-wait">BOSQICH 3 · 6+ OY</div>
       <h4>Kengaytirish</h4>
       <ol>
-        <li>Namangan va Andijon qo'shiladi<em>—</em></li>
+        <li>Namangan qo'shiladi, keyin Andijon<em>—</em></li>
         <li>Ikki smenali haydovchi rejimi<em>—</em></li>
         <li>Tirkama parki kengaytiriladi<em>17 → 26</em></li>
         <li>Tigach parki qisqartiriladi<em>−38%</em></li>
@@ -680,7 +893,7 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
 
 <footer>
   Vaqt konstantalari: zavod parkingida navbat 8 soat · yuklash 1 soat · distributorda tushirish 10 soat · tirkama almashtirish 15 daqiqa.<br>
-  Masofalar: hub ↔ zavod 6 km / 13 daqiqa · hub ↔ Vodiy 286–302 km / <b>10 soat</b> (Qamchiq dovoni, nazorat postlari va to'xtashlar bilan).<br>
+  Masofalar: hub ↔ zavod 6 km / 13 daqiqa · hub ↔ Vodiy 286 km Farg'ona / 302 km Namangan / ~370 km Andijon — har uchalasi <b>~10 soat</b> (Qamchiq dovoni, nazorat postlari va to'xtashlar bilan).<br>
   Qaytish koeffitsiyenti raqamlari 78 790 reysli reyestrdan (2025-10-01 → 2026-09-10). Park hisobi 24 soatlik rejim uchun.
 </footer>
 
@@ -696,9 +909,10 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
     V:[[190,336],[190,140]],              // 0 hub  · 1 zavod
     H:[[330,380],[890,380]],              // 0 hub  · 1 distributor
     D:[[280,90],[1000,90],[1000,300]],    // 0 zavod· 1 distributor
-    K:[[1040,412],[1040,520],[400,520]]   // 0 dist · 1 manbalar kollektori
+    K:[[1040,412],[1040,520],[400,520]], // 0 dist · 1 manbalar kollektori
+    T:[[560,380],[560,278]]               // 0 magistral · 1 Toshkent qabul
   };
-  var INSET={V:0.16,H:0.05,D:0.03,K:0};
+  var INSET={V:0.16,H:0.05,D:0.03,K:0,T:0.10};
   function mkSegs(pts){var o=[],T=0,i,dx,dy,L;
     for(i=0;i<pts.length-1;i++){dx=pts[i+1][0]-pts[i][0];dy=pts[i+1][1]-pts[i][1];
       L=Math.sqrt(dx*dx+dy*dy);o.push({a:pts[i],b:pts[i+1],L:L,ang:Math.atan2(dy,dx)*180/Math.PI});T+=L;}
@@ -721,14 +935,15 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
 
   /* ============ VAQT KONSTANTALARI (soat) ============ */
   var SWAP=0.25, SHUT=13/60, LOAD=1.0, UNLOAD=10.0, LINE=10.0, LOCAL=0.5, KLOAD=1.5;
-  var QMAX=8, FLEET=100;
+  var QMAX=8, FLEET=100, TJ=0.4107, TSPUR=0.20;   // TJ = Toshkent tarmog'i H yo'lidagi nuqtasi
 
   /* ============ HOLAT ============ */
   var S;
   function reset(){
     S={ t:0,
       Z:{queue:8, loadEnd:null, ready:2, incoming:0},
-      H:{empty:42, loaded:6},
+      H:{empty:38, loaded:6},
+      TSH:{unload:[], empty:2},
       D:{unload:[], empty:4, swap:3},
       SRC:[
         {name:'Kafel zavodi',  sh:'KAFEL',   p:0.9037, gap:14, ready:2, queue:2, loadEnd:null, next:0, busy:0},
@@ -736,10 +951,11 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
         {name:"To'qimachilik", sh:"TO'QIM.", p:0.4305, gap:22, ready:1, queue:2, loadEnd:null, next:0, busy:0},
         {name:'Sement',        sh:'SEMENT',  p:0.1939, gap:18, ready:1, queue:2, loadEnd:null, next:0, busy:0}
       ],
-      stat:{trips:0, back:0, empt:0},
+      stat:{trips:0, back:0, empt:0, tsh:0},
       veh:[], log:[] };
     // boshlang'ich tushirish navbati (9 ta, turli tugash vaqtlari)
     for(var i=0;i<9;i++) S.D.unload.push(i*1.05);
+    S.TSH.unload.push(2.2); S.TSH.unload.push(6.4);
     S.SRC[0].loadEnd=1.2; S.SRC[1].loadEnd=0.8;
     buildVeh();
     logEl.innerHTML=''; S.log=[];
@@ -877,7 +1093,22 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
         hold(v,'d_hook',SWAP,'TIRKAMA ALMASHISH'); break;
       case 'd_hook':
         distSwapOut(v);
-        go(v,'to_h','H',1,0,LINE, v.back?'QAYTISH YUKI → HUB':(v.cargo?"BO'SH → HUB":'TIRKAMASIZ → HUB')); break;
+        if(v.back) go(v,'h_to_t','H',1,TJ,LINE*(1-TJ),'QAYTISH YUKI → TOSHKENT');
+        else go(v,'to_h','H',1,0,LINE, v.cargo?"BO'SH → HUB":'TIRKAMASIZ → HUB');
+        break;
+      case 'h_to_t':
+        go(v,'t_up','T',0,1,TSPUR,'MIJOZ OMBORIGA'); break;
+      case 't_up':
+        hold(v,'t_drop',SWAP,'TIRKAMA ALMASHISH'); break;
+      case 't_drop':
+        S.TSH.unload.push(S.t+UNLOAD); v.cargo=null; v.back=false; S.stat.tsh++;
+        ev('TOSHKENT','Qaytish yuki mijoz omboriga tushirishga qoldirildi · hubga emas');
+        if(S.TSH.empty>0){ S.TSH.empty--; v.cargo='empty'; }
+        go(v,'t_dn','T',1,0,TSPUR, v.cargo?"BO'SH → HUB":'TIRKAMASIZ → HUB'); break;
+      case 't_dn':
+        go(v,'t_to_h','H',TJ,0,LINE*TJ, v.cargo?"BO'SH → HUB":'TIRKAMASIZ → HUB'); break;
+      case 't_to_h':
+        hold(v,'h_drop',SWAP,'TIRKAMA ALMASHISH'); break;
       case 'to_h':
         hold(v,'h_drop',SWAP,'TIRKAMA ALMASHISH'); break;
       case 'h_drop':
@@ -903,7 +1134,22 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
         hold(v,'d_hook',SWAP,'TIRKAMA ALMASHISH'); break;
       case 'd_hook':
         distSwapOut(v);
-        go(v,'to_h','H',1,0,LINE, v.back?'QAYTISH YUKI → HUB':"BO'SH → HUB"); break;
+        if(v.back) go(v,'h_to_t','H',1,TJ,LINE*(1-TJ),'QAYTISH YUKI → TOSHKENT');
+        else go(v,'to_h','H',1,0,LINE,"BO'SH → HUB");
+        break;
+      case 'h_to_t':
+        go(v,'t_up','T',0,1,TSPUR,'MIJOZ OMBORIGA'); break;
+      case 't_up':
+        hold(v,'t_drop',SWAP,'TIRKAMA ALMASHISH'); break;
+      case 't_drop':
+        S.TSH.unload.push(S.t+UNLOAD); v.cargo=null; v.back=false; S.stat.tsh++;
+        ev('TOSHKENT','Qaytish yuki mijoz omboriga tushirishga qoldirildi');
+        if(S.TSH.empty>0){ S.TSH.empty--; v.cargo='empty'; }
+        go(v,'t_dn','T',1,0,TSPUR, v.cargo?"BO'SH → HUB":'TIRKAMASIZ → HUB'); break;
+      case 't_dn':
+        go(v,'t_to_h','H',TJ,0,LINE*TJ, v.cargo?"BO'SH → HUB":'TIRKAMASIZ → HUB'); break;
+      case 't_to_h':
+        hold(v,'h_drop',SWAP,'TIRKAMA ALMASHISH'); break;
       case 'to_h':
         hold(v,'h_drop',SWAP,'TIRKAMA ALMASHISH'); break;
       case 'h_drop':
@@ -965,6 +1211,10 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
     var i=S.D.unload.length;
     while(i--){ if(S.t>=S.D.unload[i]){ S.D.unload.splice(i,1); S.D.empty++;
       ev('VODIY','Tushirish tugadi · tirkama bo\'shadi'); } }
+    // TOSHKENT QABUL: tushirish
+    var ti=S.TSH.unload.length;
+    while(ti--){ if(S.t>=S.TSH.unload[ti]){ S.TSH.unload.splice(ti,1); S.TSH.empty++;
+      ev('TOSHKENT','Qaytish yuki tushirildi · tirkama bo\'shadi'); } }
     // QAYTISH YUKI MANBALARI: oldindan yuklash
     for(var j=0;j<S.SRC.length;j++){
       var q=S.SRC[j];
@@ -988,6 +1238,8 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
    ['VODIY',"Distributorda tushirish 10 soat davom etadi. Tigach uni kutmaydi: tirkamani qoldirib, tayyor turganini ulab ketadi.",'Tushirish 10 soat'],
    ['QAYTISH',"To'rtta manba — kafel zavodi, Chortoq mineral suvi, to'qimachilik va sement — tirkamani tigach kelishidan avval yuklaydi. Shuning uchun qaytish yukini olish 15 daqiqa turadi, 10 soat emas.",'4 ta manba'],
    ['LOKAL',"Uchta lokal tigach manbalar bilan svop maydoni orasida aylanadi: bo'sh tirkamani manbaga olib boradi, oldindan yuklanganini svopga olib keladi.",'30 daqiqa'],
+   ['TOSHKENT',"Qaytish yuki hubga emas, Toshkentdagi mijoz omboriga tushiriladi. Tigach u yerda tirkamani qoldirib, bo'shaganini ulab hubga qaytadi.",'Hubga emas — mijozga'],
+   ['NARX',"Toshkent → Andijon reysi 3,5 mln so'm, qaytish 2,99 mln. Bo'sh qaytgan har bir mashina 2,99 mln so'mni yo'lga tashlaydi.",'Reyestr mediana narxi'],
    ['HISOB',"Klassik modelda tigach bir siklda 19 soat qimirlamaydi. Bu yerda u 30 daqiqa to'xtaydi — qolgani yo'l.",'39:00 → 20:30'],
    ['PARK',"Kuniga 10 reys uchun 16 ta avtopoyezd o'rniga 10 ta tigach va 17 ta tirkama yetadi. Qimmat tigach arzon tirkamaga almashadi.",'Tigach −38%'],
    ['TIZIM',"Yuqoridagi koeffitsiyent jonli hisoblanmoqda: yuk bilan qaytgan reyslar ÷ jami reyslar.",'Jonli KPI']
@@ -999,13 +1251,13 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
     var n=NARR[ni%NARR.length]; ni++;
     elTag.textContent=n[0]; elTag.className='tag '+({'SHUTTLE':'ALMASHISH','MAGISTRAL':'HARAKAT','KUTISH':'KUTISH',
       'HUB':'ALMASHISH','VODIY':'KUTISH','QAYTISH':'QAYTISH','LOKAL':'HARAKAT',
-      'HISOB':'TAQQOSLASH','PARK':'TAQQOSLASH','MANBA':'QAYTISH','TIZIM':'SIKL',"TO'G'RI":'HARAKAT'}[n[0]]||'SIKL');
+      'HISOB':'TAQQOSLASH','PARK':'TAQQOSLASH','MANBA':'QAYTISH','TOSHKENT':'ALMASHISH','NARX':'TAQQOSLASH','TIZIM':'SIKL',"TO'G'RI":'HARAKAT'}[n[0]]||'SIKL');
     elSub.textContent=n[1]; elDur.textContent=n[2];
   }
 
   /* ============ CHIZISH ============ */
   var E={}; ['clk','tc','z-queue','z-load','z-ready','h-empty','h-loaded','h-out','h-wait','h-fill',
-    'd-unload','d-empty','d-swap','s-trips','s-back','s-empt','s-rate']
+    'd-unload','d-empty','d-swap','t-unload','t-empty','s-trips','s-back','s-empt','s-rate']
     .forEach(function(k){E[k]=document.getElementById(k);});
   var SE=[],SQ=[]; for(var si=0;si<4;si++){ SE.push(document.getElementById('src'+si));
     SQ.push(document.getElementById('srq'+si)); }
@@ -1043,6 +1295,8 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
     E['d-unload'].textContent=S.D.unload.length;
     E['d-empty'].textContent=S.D.empty;
     E['d-swap'].textContent=S.D.swap;
+    E['t-unload'].textContent=S.TSH.unload.length;
+    E['t-empty'].textContent=S.TSH.empty;
     for(var si=0;si<S.SRC.length;si++){
       SE[si].textContent=S.SRC[si].ready;
       SQ[si].textContent=S.SRC[si].queue+(S.SRC[si].loadEnd===null?0:1);
