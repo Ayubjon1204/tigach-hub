@@ -1,0 +1,1124 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Toshkent hub uchun tirkama almashtirish (drop &amp; hook) modeli: uchta marshrut, jonli tizim simulyatsiyasi, vaqt taqqoslashi va park hisobi.">
+<meta property="og:title" content="Tigach Kutmaydi">
+<meta property="og:description" content="Tirkama almashtirish modeli — Toshkent hub, jonli simulyatsiya.">
+<meta property="og:type" content="website">
+<style>html{color-scheme:dark}body{margin:0}img{max-width:100%}</style>
+<title>Tigach Kutmaydi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+:root{
+  --void:#0A0D11; --surface:#131920; --surface2:#1A222C; --line:#222D38;
+  --ink:#E9EFF5; --ink2:#B9C6D2; --muted:#78879A;
+  --move:#2FD3C0; --wait:#F0A339; --brand:#E4352B; --hub:#7B95FF;
+  --move-dim:#11312F; --wait-dim:#33260F; --hub-dim:#1A2040; --brand-dim:#331413;
+}
+*{box-sizing:border-box}
+body{background:var(--void); color:var(--ink);
+  font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;}
+.wrap{max-width:1140px; margin:0 auto; padding:0 24px 100px}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- title card ---------- */
+.card{border-bottom:1px solid var(--line); padding:56px 0 40px}
+.eyebrow{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.18em;
+  text-transform:uppercase; color:var(--move); margin-bottom:18px}
+h1{font-family:Anton,Impact,sans-serif; font-weight:400;
+  font-size:clamp(52px,9.5vw,126px); line-height:.86; letter-spacing:.005em;
+  margin:0; text-transform:uppercase; text-wrap:balance}
+h1 em{font-style:normal; color:var(--wait)}
+.deck{font-size:18px; color:var(--ink2); max-width:60ch; margin:26px 0 0}
+.stat-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:2px; margin-top:38px; background:var(--line); border:1px solid var(--line)}
+.stat{background:var(--void); padding:20px 18px}
+.stat b{display:block; font-family:Anton,sans-serif; font-weight:400;
+  font-size:42px; line-height:1; letter-spacing:.01em; font-variant-numeric:tabular-nums}
+.stat span{display:block; font-family:"IBM Plex Mono",monospace; font-size:10.5px;
+  letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-top:10px; line-height:1.55}
+.c-move{color:var(--move)} .c-wait{color:var(--wait)} .c-hub{color:var(--hub)} .c-brand{color:var(--brand)}
+
+/* ---------- sections ---------- */
+section{padding-top:68px}
+.sec-head{border-top:1px solid var(--line); padding-top:16px; margin-bottom:30px;
+  display:flex; gap:22px; align-items:baseline; flex-wrap:wrap}
+.sec-n{font-family:Anton,sans-serif; font-size:15px; color:var(--muted); letter-spacing:.1em}
+h2{font-family:Anton,sans-serif; font-weight:400; text-transform:uppercase;
+  font-size:clamp(30px,4.4vw,48px); line-height:.96; letter-spacing:.01em; margin:0; text-wrap:balance}
+.sec-dek{color:var(--muted); font-size:15px; max-width:62ch; margin:10px 0 0; flex-basis:100%}
+h3{font-family:"IBM Plex Sans",sans-serif; font-weight:600; font-size:19px; margin:38px 0 12px}
+p{margin:0 0 14px; max-width:68ch; color:var(--ink2)}
+p strong{color:var(--ink); font-weight:600}
+a{color:var(--move)}
+:focus-visible{outline:2px solid var(--move); outline-offset:3px}
+
+/* ---------- simulator ---------- */
+.sim{background:var(--surface); border:1px solid var(--line); margin-top:8px}
+.sim-top{display:flex; justify-content:space-between; align-items:center; gap:16px;
+  padding:12px 16px; border-bottom:1px solid var(--line); flex-wrap:wrap}
+.clock{font-family:"IBM Plex Mono",monospace; font-size:26px; font-weight:600;
+  font-variant-numeric:tabular-nums; letter-spacing:.02em; color:var(--ink)}
+.clock small{font-size:10.5px; letter-spacing:.14em; color:var(--muted); display:block;
+  text-transform:uppercase; font-weight:400; margin-top:-2px}
+.route-pill{font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em;
+  text-transform:uppercase; padding:5px 11px; border:1px solid var(--line); color:var(--muted)}
+.route-pill.on{color:var(--void); font-weight:600}
+.route-pill.r1.on{background:var(--hub); border-color:var(--hub)}
+.route-pill.r2.on{background:var(--move); border-color:var(--move)}
+.route-pill.r3.on{background:var(--wait); border-color:var(--wait)}
+.sim-stage{position:relative; background:
+  radial-gradient(120% 90% at 50% 0%, #10161D 0%, var(--void) 70%);}
+.sim-stage svg{display:block; width:100%; height:auto}
+
+/* film subtitle */
+.subs{border-top:1px solid var(--line); padding:18px 20px 20px; background:#0C1116; min-height:132px}
+.sub-meta{display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:11px}
+.tc{font-family:"IBM Plex Mono",monospace; font-size:12px; font-weight:600; letter-spacing:.05em;
+  background:var(--surface2); border:1px solid var(--line); padding:3px 9px; color:var(--ink)}
+.tag{font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.12em;
+  text-transform:uppercase; padding:4px 9px; font-weight:600}
+.tag.HARAKAT{background:var(--move-dim); color:var(--move)}
+.tag.KUTISH{background:var(--wait-dim); color:var(--wait)}
+.tag.ALMASHISH{background:var(--hub-dim); color:var(--hub)}
+.tag.YUKLASH{background:var(--brand-dim); color:var(--brand)}
+.tag.TAYYOR,.tag.SIKL,.tag.TAQQOSLASH{background:var(--surface2); color:var(--ink2)}
+.tag.QAYTISH{background:var(--move-dim); color:var(--move)}
+.trans{font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--muted); letter-spacing:.06em}
+.trans b{color:var(--ink2); font-weight:500}
+.sub-text{font-family:"IBM Plex Mono",monospace; font-size:clamp(14px,1.55vw,17px);
+  line-height:1.55; color:var(--ink); max-width:none; margin:0}
+.sub-dur{font-family:"IBM Plex Mono",monospace; font-size:11.5px; color:var(--muted);
+  margin-top:9px; letter-spacing:.04em}
+
+.sim-ctrl{display:flex; gap:10px; align-items:center; padding:12px 16px;
+  border-top:1px solid var(--line); flex-wrap:wrap}
+button{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.09em;
+  text-transform:uppercase; background:var(--surface2); color:var(--ink2);
+  border:1px solid var(--line); padding:8px 14px; cursor:pointer; transition:.15s}
+button:hover{background:var(--line); color:var(--ink)}
+button.primary{background:var(--move); border-color:var(--move); color:#06110F; font-weight:600}
+button.primary:hover{filter:brightness(1.12)}
+button.sp.on{background:var(--line); color:var(--ink)}
+.scrub{flex:1; min-width:160px; height:4px; background:var(--line); position:relative; cursor:pointer}
+.scrub i{position:absolute; inset:0 auto 0 0; background:var(--move); display:block}
+
+.log{max-height:210px; overflow-y:auto; border-top:1px solid var(--line);
+  font-family:"IBM Plex Mono",monospace; font-size:11.5px; line-height:1.85; padding:10px 16px 14px}
+.log div{color:var(--muted); display:flex; gap:12px}
+.log div.cur{color:var(--ink)}
+.log b{color:var(--ink2); font-weight:500; flex:0 0 80px; font-variant-numeric:tabular-nums}
+.log u{text-decoration:none; flex:0 0 76px; color:#5C6B7D; font-size:10px; letter-spacing:.08em}
+.log span{flex:1}
+
+/* KPI blok */
+.kpis{display:flex; gap:1px; background:var(--line); border:1px solid var(--line); flex-wrap:wrap}
+.kpi{background:var(--surface); padding:7px 14px; min-width:86px}
+.kpi b{display:block; font-family:"IBM Plex Mono",monospace; font-size:18px; font-weight:600;
+  line-height:1.15; color:var(--ink)}
+.kpi span{display:block; font-family:"IBM Plex Mono",monospace; font-size:8.5px; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--muted); margin-top:3px; line-height:1.4}
+.hint{font-size:10px; color:var(--muted); letter-spacing:.06em; margin-left:4px}
+
+/* ---------- legend ---------- */
+.legend{display:flex; flex-wrap:wrap; gap:18px; margin-top:14px}
+.legend span{display:inline-flex; align-items:center; gap:8px;
+  font-family:"IBM Plex Mono",monospace; font-size:10.5px; color:var(--muted);
+  letter-spacing:.06em; text-transform:uppercase}
+.sw{width:14px; height:10px; display:inline-block}
+
+/* ---------- route cards ---------- */
+.routes{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:2px;
+  background:var(--line); border:1px solid var(--line); margin-top:8px}
+.rt{background:var(--void); padding:24px 22px}
+.rt-n{font-family:Anton,sans-serif; font-size:13px; letter-spacing:.12em; margin-bottom:12px}
+.rt h4{font-family:"IBM Plex Sans",sans-serif; font-size:18px; font-weight:600; margin:0 0 10px; color:var(--ink)}
+.rt p{font-size:14.5px; margin:0 0 14px; color:var(--muted)}
+.rt ol{margin:0; padding:0; list-style:none; counter-reset:s}
+.rt ol li{counter-increment:s; display:grid; grid-template-columns:22px 1fr auto; gap:10px;
+  padding:8px 0; border-top:1px solid var(--line); font-size:13.5px; color:var(--ink2); align-items:baseline}
+.rt ol li::before{content:counter(s); font-family:"IBM Plex Mono",monospace;
+  font-size:10px; color:var(--muted)}
+.rt ol li em{font-style:normal; font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--muted); white-space:nowrap}
+
+/* ---------- tables ---------- */
+.scroller{overflow-x:auto}
+table{border-collapse:collapse; width:100%; font-size:14px; font-variant-numeric:tabular-nums; margin-top:8px}
+caption{text-align:left; font-family:"IBM Plex Mono",monospace; font-size:10.5px;
+  letter-spacing:.12em; text-transform:uppercase; color:var(--muted); padding-bottom:12px}
+th{font-family:"IBM Plex Mono",monospace; font-size:10px; font-weight:500; letter-spacing:.09em;
+  text-transform:uppercase; color:var(--muted); text-align:right; padding:0 14px 9px;
+  border-bottom:1px solid var(--muted); vertical-align:bottom}
+th:first-child,td:first-child{text-align:left; padding-left:0}
+th:last-child,td:last-child{padding-right:0}
+td{padding:11px 14px; text-align:right; border-bottom:1px solid var(--line); color:var(--ink2)}
+td.k{color:var(--ink); font-weight:500}
+tfoot td{border-bottom:none; border-top:1px solid var(--muted); font-weight:600; color:var(--ink); padding-top:13px}
+.good{color:var(--move); font-weight:600}
+.bad{color:var(--wait); font-weight:600}
+
+/* ---------- note ---------- */
+.note{background:var(--surface); border-left:3px solid var(--move); padding:20px 22px; margin:26px 0; font-size:15px}
+.note.w{border-left-color:var(--wait)}
+.note p{margin:0 0 12px} .note p:last-child{margin:0}
+ul.plain{margin:0 0 14px; padding-left:20px; max-width:66ch}
+ul.plain li{margin-bottom:9px; color:var(--ink2)}
+ul.plain li strong{color:var(--ink)}
+
+footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
+  font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--muted); line-height:1.95}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@media (max-width:660px){
+  .sim-top{gap:10px} .clock{font-size:20px}
+  .rt ol li{grid-template-columns:20px 1fr} .rt ol li em{grid-column:2}
+}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+
+<header class="card">
+  <div class="eyebrow">Toshkent Hub · Tirkama almashtirish modeli · Drop &amp; Hook</div>
+  <h1>Tigach<br>kutmaydi.<br><em>Tirkama kutadi.</em></h1>
+  <p class="deck">Bugun tigach bir reysda 19 soat qimirlamay turadi: 8 soat zavod parkingida, 10 soat distributorda tushirishda, 1 soat yuklashda. Tirkama almashtirish modelida bu kutish tirkamaga o'tadi — tigach esa faqat haydaydi.</p>
+  <div class="stat-row">
+    <div class="stat"><b class="c-wait num">39:00</b><span>Klassik sikl<br>Toshkent → Vodiy → Toshkent</span></div>
+    <div class="stat"><b class="c-move num">20:30</b><span>Drop &amp; Hook sikli<br>magistral tigach</span></div>
+    <div class="stat"><b class="c-move num">1,90×</b><span>Bir tigachning<br>reys quvvati</span></div>
+    <div class="stat"><b class="c-hub num">15 daq</b><span>Tigachning zavodda va<br>distributorda sarflagan vaqti</span></div>
+  </div>
+</header>
+
+<!-- ============== 01 SIMULYATOR ============== -->
+<section>
+  <div class="sec-head">
+    <span class="sec-n">01</span>
+    <h2>Tizim · jonli simulyatsiya</h2>
+    <p class="sec-dek">Bitta mashina emas — butun tizim bir vaqtda. 100 tirkamali park, 3 shuttle tigach, 10 magistral tigach, 1 to'g'ridan-to'g'ri va 3 lokal tigach — 17 ta transport bir vaqtda. Toshkent–Vodiy oralig'i 10 soat. Har bir transport ustida nima qilayotgani yozilib turadi. Vaqt muhrlari haqiqiy: navbat ~8 soat, yuklash 1 soat, tushirish 10 soat, tirkama almashtirish 15 daqiqa.</p>
+  </div>
+
+  <div class="sim">
+    <div class="sim-top">
+      <div class="clock"><span id="clk" class="num">1-kun 00:00</span><small>Simulyatsiya vaqti</small></div>
+      <div class="kpis">
+        <div class="kpi"><b id="s-trips" class="num">0</b><span>Yetkazilgan reys</span></div>
+        <div class="kpi"><b id="s-back" class="num c-move">0</b><span>Yuk bilan qaytdi</span></div>
+        <div class="kpi"><b id="s-empt" class="num c-wait">0</b><span>Bo'sh qaytdi</span></div>
+        <div class="kpi"><b id="s-rate" class="num c-move">0%</b><span>Qaytish koeff.</span></div>
+      </div>
+    </div>
+
+    <div class="sim-stage">
+      <svg viewBox="0 0 1200 620" role="img" aria-label="Zavod, hub, distributor va kafel zavodi o'rtasidagi tirkama almashtirish tizimi">
+
+        <!-- ROADS -->
+        <line x1="190" y1="140" x2="190" y2="336" stroke="#26313D" stroke-width="16" stroke-linecap="round"/>
+        <line x1="190" y1="140" x2="190" y2="336" stroke="#3D4C5C" stroke-width="1.5" stroke-dasharray="7 10"/>
+        <line x1="330" y1="380" x2="890" y2="380" stroke="#26313D" stroke-width="16" stroke-linecap="round"/>
+        <line x1="330" y1="380" x2="890" y2="380" stroke="#3D4C5C" stroke-width="1.5" stroke-dasharray="7 10"/>
+        <polyline points="280,90 1000,90 1000,300" fill="none" stroke="#1C242E" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="280,90 1000,90 1000,300" fill="none" stroke="#2FD3C0" stroke-width="1.2" stroke-dasharray="4 11" opacity=".5"/>
+        <polyline points="1040,412 1040,520 400,520" fill="none" stroke="#222C36" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="1040,412 1040,520 400,520" fill="none" stroke="#3D4C5C" stroke-width="1.2" stroke-dasharray="5 8"/>
+        <line x1="472" y1="520" x2="472" y2="540" stroke="#2A3846" stroke-width="2"/>
+        <line x1="650" y1="520" x2="650" y2="540" stroke="#2A3846" stroke-width="2"/>
+        <line x1="826" y1="520" x2="826" y2="540" stroke="#2A3846" stroke-width="2"/>
+        <line x1="1003" y1="520" x2="1003" y2="540" stroke="#2A3846" stroke-width="2"/>
+
+        <text x="256" y="212" fill="#8FA0B2" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1">6 km</text>
+        <text x="256" y="227" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="10">13 daq</text>
+        <text x="256" y="241" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="10">SHUTTLE</text>
+        <text x="470" y="436" text-anchor="middle" fill="#8FA0B2" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1">286 km · 10 soat · MAGISTRAL</text>
+        <text x="640" y="78" text-anchor="middle" fill="#2FD3C0" font-family="IBM Plex Mono, monospace" font-size="10" letter-spacing="1.5" opacity=".8">TO'G'RIDAN-TO'G'RI · HUB ORALIG'ISIZ</text>
+        <text x="1056" y="472" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".8">LOKAL</text>
+        <text x="1056" y="485" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".8">30 daq</text>
+        <text x="340" y="510" fill="#2FD3C0" font-family="IBM Plex Mono, monospace" font-size="10" letter-spacing="1.4" opacity=".85">QAYTISH YUKI MANBALARI</text>
+
+        <!-- ZAVOD -->
+        <rect x="80" y="40" width="200" height="100" fill="#151C24" stroke="#E4352B" stroke-width="1"/>
+        <rect x="80" y="40" width="200" height="3" fill="#E4352B"/>
+        <text x="94" y="67" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="18" letter-spacing=".5">ZAVOD</text>
+        <text x="94" y="82" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".8">COCA-COLA · TOSHKENT</text>
+        <g font-family="IBM Plex Mono, monospace" font-size="10">
+          <text x="94" y="102" fill="#4C5B6C" letter-spacing=".6">NAVBAT</text>
+          <text x="266" y="102" fill="#F0A339" text-anchor="end" id="z-queue" font-weight="600">8</text>
+          <text x="94" y="118" fill="#4C5B6C" letter-spacing=".6">YUKLASHDA</text>
+          <text x="266" y="118" fill="#E4352B" text-anchor="end" id="z-load" font-weight="600">1</text>
+          <text x="94" y="134" fill="#4C5B6C" letter-spacing=".6">TAYYOR</text>
+          <text x="266" y="134" fill="#2FD3C0" text-anchor="end" id="z-ready" font-weight="600">2</text>
+        </g>
+
+        <!-- HUB -->
+        <rect x="80" y="336" width="250" height="180" fill="#151C24" stroke="#7B95FF" stroke-width="1"/>
+        <rect x="80" y="336" width="250" height="3" fill="#7B95FF"/>
+        <text x="94" y="364" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="18" letter-spacing=".5">HUB</text>
+        <text x="94" y="379" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".8">TOSHKENT · TIRKAMA MAYDONI</text>
+        <text x="316" y="366" text-anchor="end" fill="#7B95FF" font-family="Anton, sans-serif" font-size="22">100</text>
+        <text x="316" y="379" text-anchor="end" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="8.5" letter-spacing=".8">TIRKAMA PARKI</text>
+
+        <rect x="94" y="392" width="222" height="14" fill="#0D1218" stroke="#222D38"/>
+        <rect x="94" y="392" width="0" height="14" fill="#39485A" id="h-bar-e"/>
+        <rect x="94" y="392" width="0" height="14" fill="#2FD3C0" id="h-bar-l"/>
+        <rect x="94" y="392" width="0" height="14" fill="#F0A339" id="h-bar-o" opacity=".55"/>
+
+        <g font-family="IBM Plex Mono, monospace" font-size="10">
+          <text x="94" y="428" fill="#4C5B6C" letter-spacing=".6">HUBDA BO'SH</text>
+          <text x="316" y="428" fill="#9DB0C4" text-anchor="end" id="h-empty" font-weight="600">0</text>
+          <text x="94" y="446" fill="#4C5B6C" letter-spacing=".6">HUBDA YUKLANGAN</text>
+          <text x="316" y="446" fill="#2FD3C0" text-anchor="end" id="h-loaded" font-weight="600">0</text>
+          <text x="94" y="464" fill="#4C5B6C" letter-spacing=".6">TIZIMDA (ZAVOD/YO'L/VODIY)</text>
+          <text x="316" y="464" fill="#F0A339" text-anchor="end" id="h-out" font-weight="600">0</text>
+        </g>
+        <text x="94" y="492" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing=".6">MAGISTRAL KUTMOQDA</text>
+        <text x="316" y="492" fill="#9DB0C4" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" id="h-wait" font-weight="600">0</text>
+        <text x="94" y="507" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing=".6">BUFER TO'LGANLIGI</text>
+        <text x="316" y="507" fill="#9DB0C4" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" id="h-fill" font-weight="600">0%</text>
+
+        <!-- DISTRIBUTOR -->
+        <rect x="890" y="300" width="210" height="112" fill="#151C24" stroke="#F0A339" stroke-width="1"/>
+        <rect x="890" y="300" width="210" height="3" fill="#F0A339"/>
+        <text x="904" y="327" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="17" letter-spacing=".5">DISTRIBUTOR</text>
+        <text x="904" y="342" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9.5" letter-spacing=".8">FARG'ONA · NAMANGAN</text>
+        <g font-family="IBM Plex Mono, monospace" font-size="10">
+          <text x="904" y="362" fill="#4C5B6C" letter-spacing=".6">TUSHIRISHDA</text>
+          <text x="1086" y="362" fill="#F0A339" text-anchor="end" id="d-unload" font-weight="600">0</text>
+          <text x="904" y="378" fill="#4C5B6C" letter-spacing=".6">BO'SHAGAN</text>
+          <text x="1086" y="378" fill="#9DB0C4" text-anchor="end" id="d-empty" font-weight="600">0</text>
+          <text x="904" y="394" fill="#4C5B6C" letter-spacing=".6">QAYTISH YUKI TAYYOR</text>
+          <text x="1086" y="394" fill="#2FD3C0" text-anchor="end" id="d-swap" font-weight="600">0</text>
+        </g>
+
+        <!-- QAYTISH YUKI MANBALARI -->
+        <rect x="390" y="540" width="164" height="72" fill="#121820" stroke="#2FD3C0" stroke-width="1" stroke-dasharray="5 4" opacity=".9"/>
+        <text x="402" y="561" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="13" letter-spacing=".4">KAFEL ZAVODI</text>
+        <text x="402" y="575" fill="#5C6B7D" font-family="IBM Plex Mono, monospace" font-size="8.5" letter-spacing=".7">KERAMIKA · G'ISHT</text>
+        <text x="402" y="595" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing=".6">TAYYOR</text>
+        <text x="542" y="595" fill="#2FD3C0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" font-weight="600" id="src0">0</text>
+        <text x="402" y="607" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing=".6">NAVBATDA</text>
+        <text x="542" y="607" fill="#9DB0C4" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" font-weight="600" id="srq0">0</text>
+        <rect x="568" y="540" width="164" height="72" fill="#121820" stroke="#2FD3C0" stroke-width="1" stroke-dasharray="5 4" opacity=".9"/>
+        <text x="580" y="561" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="13" letter-spacing=".4">CHORTOQ</text>
+        <text x="580" y="575" fill="#5C6B7D" font-family="IBM Plex Mono, monospace" font-size="8.5" letter-spacing=".7">MINERAL SUV · NAMANGAN</text>
+        <text x="580" y="595" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing=".6">TAYYOR</text>
+        <text x="720" y="595" fill="#2FD3C0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" font-weight="600" id="src1">0</text>
+        <text x="580" y="607" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing=".6">NAVBATDA</text>
+        <text x="720" y="607" fill="#9DB0C4" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" font-weight="600" id="srq1">0</text>
+        <rect x="744" y="540" width="164" height="72" fill="#121820" stroke="#2FD3C0" stroke-width="1" stroke-dasharray="5 4" opacity=".9"/>
+        <text x="756" y="561" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="13" letter-spacing=".4">TO'QIMACHILIK</text>
+        <text x="756" y="575" fill="#5C6B7D" font-family="IBM Plex Mono, monospace" font-size="8.5" letter-spacing=".7">MATO · TAYYOR KIYIM</text>
+        <text x="756" y="595" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing=".6">TAYYOR</text>
+        <text x="896" y="595" fill="#2FD3C0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" font-weight="600" id="src2">0</text>
+        <text x="756" y="607" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing=".6">NAVBATDA</text>
+        <text x="896" y="607" fill="#9DB0C4" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" font-weight="600" id="srq2">0</text>
+        <rect x="921" y="540" width="164" height="72" fill="#121820" stroke="#2FD3C0" stroke-width="1" stroke-dasharray="5 4" opacity=".9"/>
+        <text x="933" y="561" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="13" letter-spacing=".4">SEMENT</text>
+        <text x="933" y="575" fill="#5C6B7D" font-family="IBM Plex Mono, monospace" font-size="8.5" letter-spacing=".7">QURILISH MATERIALLARI</text>
+        <text x="933" y="595" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing=".6">TAYYOR</text>
+        <text x="1073" y="595" fill="#2FD3C0" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" font-weight="600" id="src3">0</text>
+        <text x="933" y="607" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing=".6">NAVBATDA</text>
+        <text x="1073" y="607" fill="#9DB0C4" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" font-weight="600" id="srq3">0</text>
+        <!-- vehicles -->
+        <g id="veh"></g>
+      </svg>
+    </div>
+
+    <div class="subs">
+      <div class="sub-meta">
+        <span class="tc num" id="tc">1-kun 00:00</span>
+        <span class="tag HARAKAT" id="tag">TIZIM</span>
+        <span class="trans" id="trans"></span>
+      </div>
+      <p class="sub-text" id="sub">Tizim ishga tushdi. Zavod oldida navbat, hubda tirkama buferi, vodiyda tushirish — hammasi bir vaqtda.</p>
+      <div class="sub-dur" id="dur">Rivoyat · simulyatsiya uzluksiz davom etadi</div>
+    </div>
+
+    <div class="sim-ctrl">
+      <button class="primary" id="play">▌▌ Pauza</button>
+      <button id="rst">↺ Boshidan</button>
+      <button class="sp" data-s="0.5">0,5×</button>
+      <button class="sp on" data-s="1">1×</button>
+      <button class="sp" data-s="2">2×</button>
+      <button class="sp" data-s="4">4×</button>
+      <span class="hint mono">1× = 1 sutka 60 soniyada · yo'l 10 soat</span>
+    </div>
+
+    <div class="log" id="log"></div>
+  </div>
+
+  <div class="legend">
+    <span><i class="sw" style="background:#2FD3C0"></i>Yuklangan tirkama</span>
+    <span><i class="sw" style="background:#39485A;border:1px solid #7C90A6"></i>Bo'sh tirkama</span>
+    <span><i class="sw" style="background:#F3F7FB"></i>Tigach (tirkamasiz)</span>
+    <span><i class="sw" style="background:#7B95FF"></i>Hub buferi</span>
+    <span><i class="sw" style="background:#F0A339"></i>Kutish / tushirish</span>
+  </div>
+
+  <p style="margin-top:22px">Simulyatsiya <strong>bitta reysni emas, tizimni</strong> ko'rsatadi: zavoddan uzluksiz tirkama chiqadi, shuttle ularni hubga tashiydi, magistral tigachlar hubdan olib ketadi, vodiyda tushirish davom etar ekan to'rtta manbadan — kafel zavodi, Chortoq mineral suvi, to'qimachilik va sement — oldindan yuklangan tirkamalar qaytish yukiga aylanadi. Hech bir tigach boshqasini kutmaydi.</p>
+</section>
+
+
+<!-- ============== 02 UCH MARSHRUT ============== -->
+<section>
+  <div class="sec-head">
+    <span class="sec-n">02</span>
+    <h2>Uchta marshrut</h2>
+    <p class="sec-dek">Model uchta alohida vazifadan iborat. Har birining o'z tigachi, o'z sikli va o'z vaqt byudjeti bor. Ular bir-birini kutmaydi.</p>
+  </div>
+
+  <div class="routes">
+    <div class="rt">
+      <div class="rt-n c-hub">MARSHRUT 1</div>
+      <h4>Shuttle · Hub ↔ Zavod</h4>
+      <p>6 km qatnov. Zavodni tirkama bilan ta'minlaydi va yuklanganini olib chiqadi. Zavod oldida doimiy 5 ta smenli tirkama aylanadi.</p>
+      <ol>
+        <li>Hubdan bo'sh tirkama bilan zavodga<em>13 daq</em></li>
+        <li>Tirkama ochiriladi, navbat raqami olinadi<em>15 daq</em></li>
+        <li>Yuklangan tirkamani ulab hubga<em>13 daq</em></li>
+        <li>Hubda ochiriladi, yangi bo'sh ulanadi<em>15 daq</em></li>
+        <li>Sikl yopildi<em>56 daq</em></li>
+      </ol>
+    </div>
+
+    <div class="rt">
+      <div class="rt-n c-move">MARSHRUT 2</div>
+      <h4>To'g'ridan-to'g'ri · Zavod → Viloyat</h4>
+      <p>Agar viloyat tigachi tirkama yuklanib bo'lgan payt zavod oldida bo'lsa — hub oralig'i tushib qoladi. Eng tez variant.</p>
+      <ol>
+        <li>Tigach zavod oldida kutib turadi<em>—</em></li>
+        <li>Yuklangan tirkama to'g'ridan ulanadi<em>15 daq</em></li>
+        <li>Viloyatga yo'lga chiqadi<em>10 soat</em></li>
+        <li>Hub oralig'i o'tkazib yuborildi<em>−43 daq</em></li>
+      </ol>
+    </div>
+
+    <div class="rt">
+      <div class="rt-n c-wait">MARSHRUT 3</div>
+      <h4>Hub orqali · Magistral</h4>
+      <p>Tigach yo'q bo'lsa, yuklangan tirkama hubda buferda turadi. Magistral tigach kelganda 15 daqiqada oladi va ketadi.</p>
+      <ol>
+        <li>Yuklangan tirkama hub buferida<em>bufer</em></li>
+        <li>Magistral tigach ulaydi<em>15 daq</em></li>
+        <li>Hub → Distributor<em>10 soat</em></li>
+        <li>Tirkama ochiriladi, tushirishga qoldiriladi<em>15 daq</em></li>
+        <li>Tayyor yuklangan tirkama ulanadi<em>15 daq</em></li>
+        <li>Distributor → Hub<em>10 soat</em></li>
+        <li>Sikl yopildi<em>20 s 30 daq</em></li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="note">
+    <p><strong>Asosiy qoida.</strong> Distributorda tushirish 10 soat davom etadi — lekin bu 10 soat endi tigachni ushlab turmaydi. Tigach tirkamani qoldirib, o'sha yerda <strong>tayyor yuklangan boshqa tirkamani</strong> ulab ketadi. Qaytish yuki aynan o'sha distributordan bo'lishi shart emas: kafel zavodi, to'qimachilik, qurilish materiallari — hududda oldindan yuklab qo'yilgan istalgan tirkama bo'lishi mumkin.</p>
+  </div>
+</section>
+
+<!-- ============== 03 TAQQOSLASH ============== -->
+<section>
+  <div class="sec-head">
+    <span class="sec-n">03</span>
+    <h2>39 soat ⟶ 20 soat 30 daqiqa</h2>
+    <p class="sec-dek">Bir xil yuk, bir xil masofa (286 km, 10 soat), bir xil zavod navbati. Farq faqat shunda: kim kutadi — tigachmi yoki tirkamami.</p>
+  </div>
+
+  <div class="scroller">
+  <svg viewBox="0 0 1040 300" role="img" aria-label="Klassik va drop and hook modellarining vaqt taqqoslashi">
+    <line x1="150" y1="46" x2="1010" y2="46" stroke="#222D38" stroke-width="1"/>
+    <g font-family="IBM Plex Mono, monospace" font-size="10" fill="#4C5B6C">
+      <text x="150.0" y="36" text-anchor="middle">0</text>
+      <text x="354.8" y="36" text-anchor="middle">10 s</text>
+      <text x="559.5" y="36" text-anchor="middle">20 s</text>
+      <text x="764.3" y="36" text-anchor="middle">30 s</text>
+      <text x="969.0" y="36" text-anchor="middle">40 s</text>
+    </g>
+    <g stroke="#1A222C" stroke-width="1">
+      <line x1="354.8" y1="46" x2="354.8" y2="250"/>
+      <line x1="559.5" y1="46" x2="559.5" y2="250"/>
+      <line x1="764.3" y1="46" x2="764.3" y2="250"/>
+      <line x1="969.0" y1="46" x2="969.0" y2="250"/>
+    </g>
+    <text x="0" y="76" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="16">KLASSIK</text>
+    <text x="0" y="92" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9.5">TIRKAMA ULANGAN</text>
+    <text x="0" y="106" fill="#F0A339" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">39 s 00 daq</text>
+    <rect x="150.0" y="62" width="163.8" height="34" fill="#F0A339"/>
+    <text x="231.9" y="84" text-anchor="middle" fill="#2B1C05" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">NAVBAT 8 s</text>
+    <rect x="313.8" y="62" width="20.5" height="34" fill="#E4352B"/>
+    <rect x="334.3" y="62" width="204.8" height="34" fill="#2FD3C0"/>
+    <text x="436.7" y="84" text-anchor="middle" fill="#06110F" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">YO'L 10 s</text>
+    <rect x="539.0" y="62" width="204.8" height="34" fill="#F0A339"/>
+    <text x="641.4" y="84" text-anchor="middle" fill="#2B1C05" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">TUSHIRISH 10 s</text>
+    <rect x="743.8" y="62" width="204.8" height="34" fill="#2FD3C0"/>
+    <text x="846.2" y="84" text-anchor="middle" fill="#06110F" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">YO'L 10 s</text>
+    <text x="150" y="118" fill="#F0A339" font-family="IBM Plex Mono, monospace" font-size="10.5" letter-spacing=".5">TIGACH 19 SOAT QIMIRLAMAYDI · SUTKADA 0,62 REYS</text>
+    <text x="0" y="168" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="16">D&amp;H</text>
+    <text x="0" y="184" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9.5">MAGISTRAL TIGACH</text>
+    <text x="0" y="198" fill="#2FD3C0" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">20 s 30 daq</text>
+    <rect x="150.0" y="154" width="5.1" height="34" fill="#7B95FF"/>
+    <rect x="155.1" y="154" width="204.8" height="34" fill="#2FD3C0"/>
+    <text x="257.5" y="176" text-anchor="middle" fill="#06110F" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">YO'L 10 s</text>
+    <rect x="359.9" y="154" width="5.1" height="34" fill="#7B95FF"/>
+    <rect x="365.0" y="154" width="204.8" height="34" fill="#2FD3C0"/>
+    <text x="467.4" y="176" text-anchor="middle" fill="#06110F" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">YO'L 10 s</text>
+    <rect x="569.8" y="154" width="5.1" height="34" fill="#7B95FF" opacity=".4"/>
+    <rect x="574.9" y="154" width="204.8" height="34" fill="#2FD3C0" opacity=".4"/>
+    <text x="677.3" y="176" text-anchor="middle" fill="#06110F" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">2-REYS</text>
+    <rect x="779.6" y="154" width="5.1" height="34" fill="#7B95FF" opacity=".4"/>
+    <rect x="784.8" y="154" width="204.8" height="34" fill="#2FD3C0" opacity=".4"/>
+    <text x="887.1" y="176" text-anchor="middle" fill="#06110F" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">2-REYS</text>
+    <text x="150" y="208" fill="#2FD3C0" font-family="IBM Plex Mono, monospace" font-size="10.5" letter-spacing=".5">TIGACH 30 DAQIQA TO'XTAYDI · SUTKADA 1,17 REYS</text>
+    <line x1="948.6" y1="54" x2="948.6" y2="240" stroke="#F0A339" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="940.6" y="236" text-anchor="end" fill="#F0A339" font-family="IBM Plex Mono, monospace" font-size="10.5">KLASSIK 1-REYSNI ENDI TUGATDI</text>
+    <text x="150" y="266" fill="#E9EFF5" font-family="IBM Plex Mono, monospace" font-size="12.5" letter-spacing=".4">Klassik tigach 1 reys qilgan vaqtda drop &amp; hook tigachi <tspan fill="#2FD3C0" font-weight="600">1,90 reys</tspan> qiladi.</text>
+    <text x="150" y="284" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="10.5">Navbat 8 soat va tushirish 10 soat ikkalasida ham bor — ular yo'qolmadi, tirkamaga ko'chdi.</text>
+  </svg>
+  </div>
+
+  <div class="scroller">
+  <table>
+    <caption>Bir sikl · bosqichlar bo'yicha vaqt</caption>
+    <thead><tr><th>Bosqich</th><th>Klassik tigach</th><th>D&amp;H magistral tigach</th><th>D&amp;H tirkama</th></tr></thead>
+    <tbody>
+      <tr><td class="k">Zavod parkingida navbat</td><td class="bad">8 s 00</td><td class="good">—</td><td>8 s 00</td></tr>
+      <tr><td class="k">Yuklash</td><td class="bad">1 s 00</td><td class="good">—</td><td>1 s 00</td></tr>
+      <tr><td class="k">Tirkama almashtirish (×2–4)</td><td>—</td><td>0 s 30</td><td>1 s 30</td></tr>
+      <tr><td class="k">Shuttle qatnovi (6 km ×2)</td><td>—</td><td>—</td><td>0 s 26</td></tr>
+      <tr><td class="k">Magistral yo'l (286 km ×2)</td><td class="good">20 s 00</td><td class="good">20 s 00</td><td>20 s 00</td></tr>
+      <tr><td class="k">Distributorda tushirish</td><td class="bad">10 s 00</td><td class="good">—</td><td>10 s 00</td></tr>
+    </tbody>
+    <tfoot>
+      <tr><td>Jami sikl</td><td class="bad">39 s 00</td><td class="good">20 s 30</td><td>40 s 41</td></tr>
+      <tr><td>Harakatda o'tgan ulush</td><td class="bad">51%</td><td class="good">98%</td><td>—</td></tr>
+    </tfoot>
+  </table>
+  </div>
+</section>
+
+<!-- ============== 04 PARK ============== -->
+<section>
+  <div class="sec-head">
+    <span class="sec-n">04</span>
+    <h2>Park hisobi</h2>
+    <p class="sec-dek">Kuniga 10 ta reys Toshkent → Vodiy, bir tomonga 10 soat yo'l. Bir xil natija, ikki xil park.</p>
+  </div>
+
+  <div class="scroller">
+  <table>
+    <caption>Kunlik reys soniga qarab kerakli texnika</caption>
+    <thead><tr><th>Kuniga reys</th><th>Klassik avtopoyezd</th><th>D&amp;H magistral tigach</th><th>D&amp;H shuttle tigach</th><th>D&amp;H tigach jami</th><th>D&amp;H tirkama</th><th>Tigach farqi</th></tr></thead>
+    <tbody>
+      <tr><td class="k">6</td><td>10</td><td>5</td><td>1</td><td class="good">6</td><td>10</td><td class="good">−4</td></tr>
+      <tr><td class="k">10</td><td>16</td><td>9</td><td>1</td><td class="good">10</td><td>17</td><td class="good">−6</td></tr>
+      <tr><td class="k">14</td><td>23</td><td>12</td><td>2</td><td class="good">14</td><td>24</td><td class="good">−9</td></tr>
+      <tr><td class="k">20</td><td>32</td><td>17</td><td>2</td><td class="good">19</td><td>34</td><td class="good">−13</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note">
+    <p><strong>Savdo shundan iborat: qimmat tigachni arzon tirkamaga almashtirasiz.</strong> Kuniga 10 reysda 16 ta avtopoyezd o'rniga 10 ta tigach va 17 ta tirkama kerak. Tigach soni 38% ga kamayadi, tirkama bittaga ko'payadi.</p>
+    <p>Yillik hisobda: 10 reys/kun = 3 650 reys. Klassik modelda tigachlar shu reyslarda <strong>69 350 soat</strong> qimirlamay turadi — bu 8 ta tigachning butun yillik ish vaqti. Drop &amp; hook bu soatlarni tirkamaga ko'chiradi.</p>
+  </div>
+
+  <div class="note w">
+    <p><strong>Nimaga e'tibor berish kerak.</strong> Bir tomonga 10 soat yo'l — bu bitta haydovchining butun kunlik normasi. Shuning uchun 24 soatlik rejim majburiy: magistral yo'nalishda ikki smenali haydovchi yoki hubda haydovchi almashish kerak. Bir haydovchi bilan tigach sikli 20,5 soat emas, sutkaga cho'ziladi va tejamning yarmi yo'qoladi. Hub aynan shu sababli haydovchi almashish nuqtasi bo'lishi kerak.</p>
+  </div>
+</section>
+
+<!-- ============== 05 HUB ============== -->
+<section>
+  <div class="sec-head">
+    <span class="sec-n">05</span>
+    <h2>Hub · joylashuv</h2>
+    <p class="sec-dek">Hub zavoddan 6 km narida, magistral chiqishida. Ikki vazifasi bor: zavod ritmini magistral ritmidan ajratish va tirkama buferini ushlab turish.</p>
+  </div>
+
+  <div class="scroller">
+  <svg viewBox="0 0 1040 200" role="img" aria-label="Hub joylashuvi va masofalar sxemasi">
+    <line x1="60" y1="100" x2="200" y2="100" stroke="#26313D" stroke-width="10" stroke-linecap="round"/>
+    <line x1="290" y1="100" x2="960" y2="100" stroke="#26313D" stroke-width="10" stroke-linecap="round"/>
+
+    <circle cx="60" cy="100" r="9" fill="#E4352B"/>
+    <text x="60" y="78" text-anchor="middle" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="14">ZAVOD</text>
+    <text x="60" y="128" text-anchor="middle" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9.5">COCA-COLA</text>
+
+    <rect x="200" y="76" width="90" height="48" fill="#151C24" stroke="#7B95FF"/>
+    <text x="245" y="98" text-anchor="middle" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="15">HUB</text>
+    <text x="245" y="114" text-anchor="middle" fill="#7B95FF" font-family="IBM Plex Mono, monospace" font-size="9">TIRKAMA MAYDONI</text>
+
+    <circle cx="960" cy="100" r="9" fill="#F0A339"/>
+    <text x="960" y="78" text-anchor="middle" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="14">VODIY</text>
+    <text x="960" y="128" text-anchor="middle" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9.5">FARG'ONA / NAMANGAN</text>
+
+    <text x="130" y="94" text-anchor="middle" fill="#B9C6D2" font-family="IBM Plex Mono, monospace" font-size="10.5">6 km</text>
+    <text x="130" y="108" text-anchor="middle" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9.5">13 daq</text>
+
+    <text x="625" y="94" text-anchor="middle" fill="#B9C6D2" font-family="IBM Plex Mono, monospace" font-size="10.5">286 km — Farg'ona · 10 soat</text>
+    <text x="625" y="108" text-anchor="middle" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9.5">302 km — Namangan · ~10 soat · Qamchiq dovoni, nazorat postlari</text>
+
+    <text x="0" y="176" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="10">Masofalar foydalanuvchi bergan marshrut kartalaridan olingan.</text>
+  </svg>
+  </div>
+
+  <h3>Hub nima uchun kerak</h3>
+  <ul class="plain">
+    <li><strong>Ritmni ajratish.</strong> Zavod navbati 8 soat va oldindan aniq emas. Magistral tigach esa aniq jadval bilan ishlashi kerak. Hub ikkalasi orasida bufer bo'ladi — tigach zavod navbatini kutmaydi, hubdan tayyor tirkamani oladi.</li>
+    <li><strong>Bo'sh yurishni yo'qotish.</strong> Shuttle hech qachon bo'sh qatnamaydi: zavodga bo'sh tirkama bilan boradi, yuklangan bilan qaytadi.</li>
+    <li><strong>Kechayu kunduz ishlash.</strong> Zavod kechasi yuklasa, tirkama hubda tayyor turadi va magistral tigach ertalab olib ketadi. Aksincha ham shunday.</li>
+    <li><strong>Haydovchi almashish nuqtasi.</strong> Ikki smenali rejimda haydovchilar hubda almashadi — tigach to'xtamaydi.</li>
+  </ul>
+
+  <h3>Maydonga qo'yiladigan talab</h3>
+  <div class="scroller">
+  <table>
+    <caption>Kuniga 10 reys uchun taxminiy o'lcham — aniq loyiha maydon o'lchoviga qarab hisoblanadi</caption>
+    <thead><tr><th>Element</th><th>Miqdor</th><th>Izoh</th></tr></thead>
+    <tbody>
+      <tr><td class="k">Tirkama o'rni</td><td>10–12</td><td style="text-align:left">Bir smenalik chiqim + zaxira</td></tr>
+      <tr><td class="k">Bir o'rin maydoni</td><td>~60 m²</td><td style="text-align:left">16×3,5 m tirkama + oraliq</td></tr>
+      <tr><td class="k">Manevr yo'lagi</td><td>≥ 25 m</td><td style="text-align:left">Yarim tirkama burilish radiusi</td></tr>
+      <tr><td class="k">Tigach to'xtash joyi</td><td>4–6</td><td style="text-align:left">Smena almashish uchun</td></tr>
+      <tr><td class="k">Jami maydon</td><td>0,5–1 ga</td><td style="text-align:left">Qorovul, yoritish, dam olish xonasi bilan</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p style="font-size:13.5px; color:var(--muted); margin-top:12px">Maydon hisobi taxminiy — u loyihalash uchun boshlang'ich nuqta, qurilish hujjati emas. Aniq raqam tanlangan yer uchastkasining shakli va kirish-chiqish nuqtalariga bog'liq.</p>
+</section>
+
+<!-- ============== 06 QAYTISH YUKI ============== -->
+<section>
+  <div class="sec-head">
+    <span class="sec-n">06</span>
+    <h2>Qaytish yuki — model shu yerda pul qiladi</h2>
+    <p class="sec-dek">Bugungi bazada Toshkentdan Vodiyga chiqqan mashinalarning atigi 7,4% i yuk bilan qaytadi. Yiliga 9 437 ta bo'sh qaytish.</p>
+  </div>
+
+  <p>Sabab tushunarli: distributorda tushirish 10 soat davom etadi. Tigach 10 soat kutgandan keyin, haydovchining ish vaqti tugaydi va qaytish yukini qidirishga na vaqt, na imkon qoladi. Yuk topilsa ham, uni yuklashga yana bir necha soat kerak — bu ikkinchi sutkaga chiqadi.</p>
+
+  <p><strong>Tirkama almashtirish bu bog'lovni uzadi.</strong> Tigach yuklangan tirkamani distributorga qoldiradi va o'sha yerda tayyor turgan tirkamani ulab, 15 daqiqada yo'lga chiqadi. Qaytish yuki oldindan, tigach kelishidan avval yuklab qo'yiladi — Simulyatsiyada to'rtta manba bor: <strong>kafel zavodi, Chortoq mineral suvi, to'qimachilik klasteri va sement</strong> — to'rttasi ham reyestrda haqiqatan uchraydigan yo'nalishlar.</p>
+
+  <div class="scroller">
+  <table>
+    <caption>Qaytish yuki topish uchun kerakli vaqt — ikki modelda</caption>
+    <thead><tr><th>Shart</th><th>Klassik</th><th>Drop &amp; Hook</th></tr></thead>
+    <tbody>
+      <tr><td class="k">Yukni topishga qancha vaqt bor</td><td class="bad">Tushirish tugagach, bir necha soat</td><td class="good">Tigach kelishidan oldin, cheklovsiz</td></tr>
+      <tr><td class="k">Yuklash tigachni ushlab turadimi</td><td class="bad">Ha</td><td class="good">Yo'q — tirkama oldindan yuklanadi</td></tr>
+      <tr><td class="k">Yuk aynan o'sha distributordan bo'lishi kerakmi</td><td class="bad">Amalda ha</td><td class="good">Yo'q — hududdagi istalgan jo'natuvchi</td></tr>
+      <tr><td class="k">Yuk topilmasa</td><td class="bad">Bo'sh qaytadi</td><td>Bo'sh tirkama bilan qaytadi — hech bo'lmasa tirkama aylanadi</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note">
+    <p><strong>Bog'lanish.</strong> Avvalgi tahlilda Andijon yo'nalishida qaytish atigi 15,2%, Namanganda esa 42,6% ekani chiqqan edi. Farq — jo'natuvchi bazasida. Tirkama almashtirish modeli bu bazani ishlatish uchun texnik imkon yaratadi: hududda oldindan yuklangan tirkama tursa, uni olib ketish 15 daqiqa turadi, 10 soat emas.</p>
+  </div>
+</section>
+
+<!-- ============== 07 JORIY ETISH ============== -->
+<section>
+  <div class="sec-head">
+    <span class="sec-n">07</span>
+    <h2>Joriy etish</h2>
+    <p class="sec-dek">Butun parkni birdan o'tkazish shart emas. Model bitta yo'nalishda sinab ko'riladi va natija o'lchanadi.</p>
+  </div>
+
+  <div class="routes">
+    <div class="rt">
+      <div class="rt-n c-hub">BOSQICH 1 · 1–2 OY</div>
+      <h4>Pilot: bitta yo'nalish</h4>
+      <ol>
+        <li>Hub maydoni ijaraga olinadi<em>0,5 ga</em></li>
+        <li>Qo'shimcha tirkama olinadi<em>5–6 ta</em></li>
+        <li>Shuttle tigach ajratiladi<em>1 ta</em></li>
+        <li>Zavod bilan tirkama qoldirish kelishuvi<em>—</em></li>
+        <li>Faqat Farg'ona yo'nalishi<em>3–4 reys/kun</em></li>
+      </ol>
+    </div>
+    <div class="rt">
+      <div class="rt-n c-move">BOSQICH 2 · 3–4 OY</div>
+      <h4>Qaytish yukini ulash</h4>
+      <ol>
+        <li>Vodiyda 3–4 jo'natuvchi bilan shartnoma<em>—</em></li>
+        <li>Har birida tirkama qoldiriladi<em>2–3 ta</em></li>
+        <li>Oldindan yuklash jadvali kelishiladi<em>—</em></li>
+        <li>Qaytish koeffitsiyenti o'lchanadi<em>maqsad 40%</em></li>
+      </ol>
+    </div>
+    <div class="rt">
+      <div class="rt-n c-wait">BOSQICH 3 · 6+ OY</div>
+      <h4>Kengaytirish</h4>
+      <ol>
+        <li>Namangan va Andijon qo'shiladi<em>—</em></li>
+        <li>Ikki smenali haydovchi rejimi<em>—</em></li>
+        <li>Tirkama parki kengaytiriladi<em>17 → 26</em></li>
+        <li>Tigach parki qisqartiriladi<em>−38%</em></li>
+      </ol>
+    </div>
+  </div>
+
+  <h3>Nima o'lchanadi</h3>
+  <ul class="plain">
+    <li><strong>Tigachning harakatdagi ulushi</strong> — bugungi 35% dan qancha oshdi</li>
+    <li><strong>Tirkama aylanish tezligi</strong> — oyiga necha marta to'liq sikl</li>
+    <li><strong>Qaytish koeffitsiyenti</strong> — yuk bilan qaytgan reyslar ulushi</li>
+    <li><strong>Hub buferidagi o'rtacha tirkama soni</strong> — bufer yetarlimi yoki ortiqchami</li>
+    <li><strong>Tirkama almashtirish vaqti</strong> — amalda 15 daqiqaga chiqadimi</li>
+  </ul>
+
+  <div class="note w">
+    <p><strong>Eng katta xavf — zavod bilan kelishuv.</strong> Butun model zavod tirkamani o'z hududida qoldirishga ruxsat berishiga tayanadi: 5 ta smenli tirkama uchun joy, navbat raqamini tirkamaga (tigachga emas) berish tartibi. Bu texnik masala emas, kelishuv masalasi — va uni birinchi navbatda hal qilish kerak. Ruxsat bo'lmasa, model faqat hub tomonda ishlaydi va tejam ikki barobar kamayadi.</p>
+  </div>
+</section>
+
+<footer>
+  Vaqt konstantalari: zavod parkingida navbat 8 soat · yuklash 1 soat · distributorda tushirish 10 soat · tirkama almashtirish 15 daqiqa.<br>
+  Masofalar: hub ↔ zavod 6 km / 13 daqiqa · hub ↔ Vodiy 286–302 km / <b>10 soat</b> (Qamchiq dovoni, nazorat postlari va to'xtashlar bilan).<br>
+  Qaytish koeffitsiyenti raqamlari 78 790 reysli reyestrdan (2025-10-01 → 2026-09-10). Park hisobi 24 soatlik rejim uchun.
+</footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var NS='http://www.w3.org/2000/svg', VEH=document.getElementById('veh');
+
+  /* ============ YO'LLAR ============ */
+  var ROADS={
+    V:[[190,336],[190,140]],              // 0 hub  · 1 zavod
+    H:[[330,380],[890,380]],              // 0 hub  · 1 distributor
+    D:[[280,90],[1000,90],[1000,300]],    // 0 zavod· 1 distributor
+    K:[[1040,412],[1040,520],[400,520]]   // 0 dist · 1 manbalar kollektori
+  };
+  var INSET={V:0.16,H:0.05,D:0.03,K:0};
+  function mkSegs(pts){var o=[],T=0,i,dx,dy,L;
+    for(i=0;i<pts.length-1;i++){dx=pts[i+1][0]-pts[i][0];dy=pts[i+1][1]-pts[i][1];
+      L=Math.sqrt(dx*dx+dy*dy);o.push({a:pts[i],b:pts[i+1],L:L,ang:Math.atan2(dy,dx)*180/Math.PI});T+=L;}
+    return {s:o,T:T};}
+  var RS={}; for(var rk in ROADS) RS[rk]=mkSegs(ROADS[rk]);
+
+  function posOn(road,p,dir){
+    var ins=INSET[road]||0, r=RS[road];
+    p=ins+Math.max(0,Math.min(1,p))*(1-2*ins);
+    var d=p*r.T,i,f,sg,x,y,ang;
+    for(i=0;i<r.s.length;i++){ sg=r.s[i];
+      if(d<=sg.L||i===r.s.length-1){
+        f=sg.L?Math.max(0,Math.min(1,d/sg.L)):0;
+        x=sg.a[0]+(sg.b[0]-sg.a[0])*f; y=sg.a[1]+(sg.b[1]-sg.a[1])*f;
+        ang=sg.ang+(dir<0?180:0);
+        var rad=ang*Math.PI/180;
+        return {x:x+Math.sin(rad)*9, y:y-Math.cos(rad)*9, ang:ang};
+      } d-=sg.L; }
+  }
+
+  /* ============ VAQT KONSTANTALARI (soat) ============ */
+  var SWAP=0.25, SHUT=13/60, LOAD=1.0, UNLOAD=10.0, LINE=10.0, LOCAL=0.5, KLOAD=1.5;
+  var QMAX=8, FLEET=100;
+
+  /* ============ HOLAT ============ */
+  var S;
+  function reset(){
+    S={ t:0,
+      Z:{queue:8, loadEnd:null, ready:2, incoming:0},
+      H:{empty:42, loaded:6},
+      D:{unload:[], empty:4, swap:3},
+      SRC:[
+        {name:'Kafel zavodi',  sh:'KAFEL',   p:0.9037, gap:14, ready:2, queue:2, loadEnd:null, next:0, busy:0},
+        {name:'Chortoq',       sh:'CHORTOQ', p:0.6658, gap:11, ready:1, queue:2, loadEnd:null, next:0, busy:0},
+        {name:"To'qimachilik", sh:"TO'QIM.", p:0.4305, gap:22, ready:1, queue:2, loadEnd:null, next:0, busy:0},
+        {name:'Sement',        sh:'SEMENT',  p:0.1939, gap:18, ready:1, queue:2, loadEnd:null, next:0, busy:0}
+      ],
+      stat:{trips:0, back:0, empt:0},
+      veh:[], log:[] };
+    // boshlang'ich tushirish navbati (9 ta, turli tugash vaqtlari)
+    for(var i=0;i<9;i++) S.D.unload.push(i*1.05);
+    S.SRC[0].loadEnd=1.2; S.SRC[1].loadEnd=0.8;
+    buildVeh();
+    logEl.innerHTML=''; S.log=[];
+    ev('TIZIM','Simulyatsiya ishga tushdi · 100 tirkamali park · 4 ta qaytish yuki manbasi');
+  }
+
+  /* ============ TRANSPORT ============ */
+  var SPEC=[
+    {kind:'shuttle', n:3,  tag:'SHUTTLE'},
+    {kind:'line',    n:10, tag:'MAGISTRAL'},
+    {kind:'direct',  n:1,  tag:"TO'G'RI"},
+    {kind:'local',   n:2,  tag:'LOKAL'}
+  ];
+  function seed(v,ph,road,p0,p1,dur,frac,cargo,lab,back){
+    v.ph=ph; v.road=road; v.p0=p0; v.p1=p1; v.dir=(p1>=p0?1:-1);
+    v.dur=Math.max(dur,0.0001); v.t0=-dur*frac; v.cargo=cargo||null;
+    v.lab=lab||''; v.back=!!back;
+  }
+  function buildVeh(){
+    while(VEH.firstChild) VEH.removeChild(VEH.firstChild);
+    S.veh=[]; var id=0;
+    function add(kind,tag){var v={id:++id,kind:kind,tag:tag,cargo:null,ph:'',t0:0,dur:SWAP,
+      road:'V',p0:0,p1:0,dir:1,lab:'',back:false}; mkEl(v); S.veh.push(v); return v;}
+
+    // --- SHUTTLE (3) : siklning turli nuqtalarida ---
+    seed(add('shuttle','SHUTTLE'),'to_z','V',0,1,SHUT,0.35,'empty',"BO'SH");
+    seed(add('shuttle','SHUTTLE'),'to_h','V',1,0,SHUT,0.70,'loaded','YUKLANGAN');
+    seed(add('shuttle','SHUTTLE'),'z_swap','V',1,1,SWAP,0.40,null,'');
+
+    // --- MAGISTRAL (10) : yo'l bo'ylab tarqoq ---
+    var outP=[0.09,0.31,0.53,0.76], inP=[0.88,0.63,0.38,0.14];
+    outP.forEach(function(f){ seed(add('line','MAGISTRAL'),'to_d','H',0,1,LINE,f,'loaded','YUKLANGAN → VODIY'); });
+    inP.forEach(function(f,k){
+      var bk=(k<2);
+      seed(add('line','MAGISTRAL'),'to_h','H',1,0,LINE,1-f,bk?'loaded':'empty',
+           bk?'QAYTISH YUKI → HUB':"BO'SH → HUB",bk);
+    });
+    seed(add('line','MAGISTRAL'),'d_hook','H',1,1,SWAP,0.5,null,'');
+    seed(add('line','MAGISTRAL'),'hub_hook','H',0,0,SWAP,0.5,null,'');
+
+    // --- TO'G'RIDAN-TO'G'RI (1) ---
+    seed(add('direct',"TO'G'RI"),'to_d','D',0,1,LINE,0.42,'loaded',"YUKLANGAN → VODIY · TO'G'RI");
+
+    // --- LOKAL (3) : manbalar kollektorida ---
+    var L0=add('local','LOKAL'); L0.src=0;
+    seed(L0,'l_to_d','K',S.SRC[0].p,0,LOCAL,0.45,'loaded','KAFEL → SVOP');
+    var L1=add('local','LOKAL'); L1.src=1; S.SRC[1].busy=1;
+    seed(L1,'l_to_s','K',0,S.SRC[1].p,LOCAL,0.30,'empty',"BO'SH → CHORTOQ");
+    var L2=add('local','LOKAL'); L2.src=3;
+    seed(L2,'l_to_d','K',S.SRC[3].p,0,LOCAL,0.20,'loaded','SEMENT → SVOP');
+  }
+  function mkEl(v){
+    var o=document.createElementNS(NS,'g'), g=document.createElementNS(NS,'g');
+    function r(x,y,w,h,fill,st,rx){var e=document.createElementNS(NS,'rect');
+      e.setAttribute('x',x);e.setAttribute('y',y);e.setAttribute('width',w);e.setAttribute('height',h);
+      e.setAttribute('rx',rx||1.5);e.setAttribute('fill',fill);
+      if(st){e.setAttribute('stroke',st);e.setAttribute('stroke-width','1.2');}
+      g.appendChild(e);return e;}
+    v.tr=r(-31,-6,24,12,'#39485A','#7C90A6');
+    v.bar=r(-8,-1.3,4,2.6,'#8397AC',null,0.5);
+    v.cab=r(-5,-7,17,14,'#F3F7FB','#FFFFFF',2.5);
+    var lamp=document.createElementNS(NS,'circle');
+    lamp.setAttribute('cx',10);lamp.setAttribute('cy',0);lamp.setAttribute('r',2.1);
+    lamp.setAttribute('fill','#F0A339'); g.appendChild(lamp);
+    v.g=g; o.appendChild(g);
+    var t=document.createElementNS(NS,'text');
+    t.setAttribute('text-anchor','middle'); t.setAttribute('fill','#93A5B8');
+    t.setAttribute('font-family','IBM Plex Mono, monospace'); t.setAttribute('font-size','7.6');
+    t.setAttribute('letter-spacing','.5'); t.setAttribute('stroke','#0A0D11');
+    t.setAttribute('stroke-width','2.6'); t.setAttribute('paint-order','stroke');
+    v.txt=t; o.appendChild(t);
+    v.el=o; VEH.appendChild(o);
+  }
+
+  /* ============ HODISA JURNALI ============ */
+  var logEl=document.getElementById('log');
+  function clock(t){var d=Math.floor(t/24)+1,h=Math.floor(t%24),m=Math.floor((t%1)*60);
+    return d+'-kun '+(h<10?'0':'')+h+':'+(m<10?'0':'')+m;}
+  function ev(tag,txt){
+    var row=document.createElement('div');
+    row.innerHTML='<b>'+clock(S.t)+'</b><u>'+tag+'</u><span>'+txt+'</span>';
+    logEl.appendChild(row);
+    while(logEl.childNodes.length>90) logEl.removeChild(logEl.firstChild);
+    logEl.scrollTop=logEl.scrollHeight;
+  }
+
+  /* ============ HARAKAT YORDAMCHISI ============ */
+  function go(v,ph,road,p0,p1,dur,lab){
+    v.ph=ph; v.road=road; v.p0=p0; v.p1=p1; v.dir=(p1>=p0?1:-1);
+    v.dur=Math.max(dur,0.0001); v.t0=S.t; v.lab=lab||'';
+  }
+  function hold(v,ph,dur,lab){ go(v,ph,v.road,v.p1,v.p1,dur,lab); }
+
+  /* ============ AGENT MASHINALARI ============ */
+  function stepShuttle(v){
+    switch(v.ph){
+      case 'hub_hook':
+        if(S.Z.queue+S.Z.incoming<QMAX && S.H.empty>0){ S.H.empty--; S.Z.incoming++; v.cargo='empty'; }
+        else v.cargo=null;
+        go(v,'to_z','V',0,1,SHUT, v.cargo?"BO'SH":'TIRKAMASIZ'); break;
+      case 'to_z':
+        hold(v,'z_swap',SWAP,'TIRKAMA ALMASHISH'); break;
+      case 'z_swap':
+        if(v.cargo==='empty'){ S.Z.queue++; S.Z.incoming--; ev('ZAVOD','Bo\'sh tirkama navbatga qo\'yildi · navbat '+S.Z.queue); }
+        v.cargo=null;
+        if(S.Z.ready>0){ S.Z.ready--; v.cargo='loaded'; }
+        go(v,'to_h','V',1,0,SHUT, v.cargo?'YUKLANGAN':'TIRKAMASIZ'); break;
+      case 'to_h':
+        hold(v,'h_drop',SWAP,'TIRKAMA ALMASHISH'); break;
+      case 'h_drop':
+        if(v.cargo==='loaded'){ S.H.loaded++; ev('HUB','Yuklangan tirkama buferga · hubda '+S.H.loaded+' ta tayyor'); }
+        v.cargo=null; hold(v,'hub_hook',SWAP,'TIRKAMA ALMASHISH'); break;
+    }
+  }
+
+  function distSwapOut(v){   // distributorda tirkama olish: avval qaytish yuki
+    if(S.D.swap>0){ S.D.swap--; v.cargo='loaded'; v.back=true; S.stat.back++;
+      ev('QAYTISH','Oldindan yuklangan tirkama ulandi · qaytish yuki bilan ketdi'); }
+    else if(S.D.empty>0){ S.D.empty--; v.cargo='empty'; v.back=false; S.stat.empt++; }
+    else { v.cargo=null; v.back=false; S.stat.empt++; }
+  }
+
+  function stepLine(v){
+    switch(v.ph){
+      case 'hub_hook':
+        if(S.H.loaded>0){ S.H.loaded--; v.cargo='loaded';
+          go(v,'to_d','H',0,1,LINE,'YUKLANGAN → VODIY'); }
+        else hold(v,'hub_hook',0.25,'HUBDA YUK KUTMOQDA');
+        break;
+      case 'to_d':
+        hold(v,'d_drop',SWAP,'TIRKAMA ALMASHISH'); break;
+      case 'd_drop':
+        S.D.unload.push(S.t+UNLOAD); v.cargo=null; S.stat.trips++;
+        ev('VODIY','Yuk yetkazildi · tushirish boshlandi (10 soat) · jami '+S.stat.trips+' reys');
+        hold(v,'d_hook',SWAP,'TIRKAMA ALMASHISH'); break;
+      case 'd_hook':
+        distSwapOut(v);
+        go(v,'to_h','H',1,0,LINE, v.back?'QAYTISH YUKI → HUB':(v.cargo?"BO'SH → HUB":'TIRKAMASIZ → HUB')); break;
+      case 'to_h':
+        hold(v,'h_drop',SWAP,'TIRKAMA ALMASHISH'); break;
+      case 'h_drop':
+        if(v.cargo) S.H.empty++;
+        v.cargo=null; v.back=false; hold(v,'hub_hook',SWAP,'TIRKAMA ALMASHISH'); break;
+    }
+  }
+
+  function stepDirect(v){
+    switch(v.ph){
+      case 'z_wait':
+        if(S.Z.ready>0){ S.Z.ready--; v.cargo='loaded';
+          ev('TO\'G\'RI','Viloyat tigachi zavod oldida edi — hub oralig\'isiz yo\'lga chiqdi');
+          go(v,'to_d','D',0,1,LINE,"YUKLANGAN → VODIY · TO'G'RI"); }
+        else hold(v,'z_wait',0.3,'ZAVODDA YUK KUTMOQDA');
+        break;
+      case 'to_d':
+        hold(v,'d_drop',SWAP,'TIRKAMA ALMASHISH'); break;
+      case 'd_drop':
+        S.D.unload.push(S.t+UNLOAD); v.cargo=null; S.stat.trips++;
+        v.road='H'; v.p1=1;
+        ev('VODIY','To\'g\'ridan-to\'g\'ri reys yetkazildi · jami '+S.stat.trips+' reys');
+        hold(v,'d_hook',SWAP,'TIRKAMA ALMASHISH'); break;
+      case 'd_hook':
+        distSwapOut(v);
+        go(v,'to_h','H',1,0,LINE, v.back?'QAYTISH YUKI → HUB':"BO'SH → HUB"); break;
+      case 'to_h':
+        hold(v,'h_drop',SWAP,'TIRKAMA ALMASHISH'); break;
+      case 'h_drop':
+        if(v.cargo) S.H.empty++;
+        v.cargo=null; v.back=false;
+        go(v,'to_z','V',0,1,SHUT,'TIRKAMASIZ → ZAVOD'); break;
+      case 'to_z':
+        v.road='D'; v.p1=0; hold(v,'z_wait',SWAP,'ZAVODDA'); break;
+    }
+  }
+
+  function pickSrc(){
+    var best=0, bs=-1e9;
+    for(var i=0;i<S.SRC.length;i++){
+      var q=S.SRC[i];
+      var sc=q.ready*10 - q.busy*1000 + (q.queue<2?4:0) - i*0.1;
+      if(sc>bs){ bs=sc; best=i; }
+    }
+    return best;
+  }
+  function stepLocal(v){
+    var q;
+    switch(v.ph){
+      case 'l_pick':
+        v.src=pickSrc(); q=S.SRC[v.src]; q.busy=1;
+        go(v,'l_to_s','K',0,q.p,LOCAL, (v.cargo?"BO'SH → ":'→ ')+q.sh); break;
+      case 'l_to_s':
+        hold(v,'l_swap',SWAP,'TIRKAMA ALMASHISH'); break;
+      case 'l_swap':
+        q=S.SRC[v.src];
+        if(v.cargo==='empty') q.queue++;
+        v.cargo=null;
+        if(q.ready>0){ q.ready--; v.cargo='loaded'; }
+        q.busy=0;
+        go(v,'l_to_d','K',q.p,0,LOCAL, v.cargo?(q.sh+' → SVOP'):'TIRKAMASIZ → SVOP'); break;
+      case 'l_to_d':
+        hold(v,'l_drop',SWAP,'TIRKAMA ALMASHISH'); break;
+      case 'l_drop':
+        if(v.cargo==='loaded'){ S.D.swap++;
+          ev('QAYTISH','Qaytish yuki svop maydonida · tayyor '+S.D.swap+' ta'); }
+        v.cargo=null;
+        if(S.D.empty>0){ S.D.empty--; v.cargo='empty'; }
+        hold(v,'l_pick',SWAP,'TIRKAMA ALMASHISH'); break;
+    }
+  }
+
+  var STEP={shuttle:stepShuttle,line:stepLine,direct:stepDirect,local:stepLocal};
+
+  /* ============ TUGUN JARAYONLARI ============ */
+  function processes(){
+    // ZAVOD: yuklash
+    if(S.Z.loadEnd===null){
+      if(S.Z.queue>0 && S.Z.ready<6 && (S.H.loaded+S.Z.ready)<18){ S.Z.queue--; S.Z.loadEnd=S.t+LOAD; }
+    } else if(S.t>=S.Z.loadEnd){
+      S.Z.loadEnd=null; S.Z.ready++;
+      ev('ZAVOD','Tirkama yuklandi · tayyor '+S.Z.ready+' ta');
+    }
+    // DISTRIBUTOR: tushirish
+    var i=S.D.unload.length;
+    while(i--){ if(S.t>=S.D.unload[i]){ S.D.unload.splice(i,1); S.D.empty++;
+      ev('VODIY','Tushirish tugadi · tirkama bo\'shadi'); } }
+    // QAYTISH YUKI MANBALARI: oldindan yuklash
+    for(var j=0;j<S.SRC.length;j++){
+      var q=S.SRC[j];
+      if(q.loadEnd===null){
+        if(q.queue>0 && S.t>=q.next && q.ready<3){ q.queue--; q.loadEnd=S.t+KLOAD; }
+      } else if(S.t>=q.loadEnd){
+        q.loadEnd=null; q.ready++; q.next=S.t+q.gap;
+        ev('MANBA', q.name+': tirkama oldindan yuklandi · tayyor '+q.ready+' ta');
+      }
+    }
+  }
+
+  /* ============ RIVOYAT ============ */
+  var NARR=[
+   ['TIZIM',"Zavod oldida navbat, hubda bufer, vodiyda tushirish — uchalasi bir vaqtda ishlaydi. Hech biri ikkinchisini kutmaydi.",'Uzluksiz rejim'],
+   ['SHUTTLE',"Uchta shuttle tigach 6 km yo'lda uzluksiz qatnaydi: zavodga bo'sh tirkama olib boradi, yuklanganini olib qaytadi. Bo'sh yurish yo'q.",'Har qatnov 13 daqiqa'],
+   ['KUTISH',"Navbatdagi 8 soat yo'qolmadi — u tirkamaga ko'chdi. Tigach bu vaqtda boshqa reys qilmoqda.",'Navbat ~8 soat'],
+   ['HUB',"Hub 100 tirkamali park. U zavod ritmini magistral ritmidan ajratadi: zavod kechasi yuklasa ham, tirkama ertalabgacha tayyor turadi.",'Bufer'],
+   ['MAGISTRAL',"O'nta magistral tigach hubdan yuklangan tirkamani oladi va 15 daqiqada yo'lga chiqadi. Ular zavod navbatini umuman ko'rmaydi.",'286 km · 10 soat'],
+   ["TO'G'RI","Agar viloyat tigachi tirkama yuklanayotgan payt zavodda bo'lsa — hub oralig'i tushib qoladi. Yuqoridagi yo'l ana shu.",'43 daqiqa tejaladi'],
+   ['VODIY',"Distributorda tushirish 10 soat davom etadi. Tigach uni kutmaydi: tirkamani qoldirib, tayyor turganini ulab ketadi.",'Tushirish 10 soat'],
+   ['QAYTISH',"To'rtta manba — kafel zavodi, Chortoq mineral suvi, to'qimachilik va sement — tirkamani tigach kelishidan avval yuklaydi. Shuning uchun qaytish yukini olish 15 daqiqa turadi, 10 soat emas.",'4 ta manba'],
+   ['LOKAL',"Uchta lokal tigach manbalar bilan svop maydoni orasida aylanadi: bo'sh tirkamani manbaga olib boradi, oldindan yuklanganini svopga olib keladi.",'30 daqiqa'],
+   ['HISOB',"Klassik modelda tigach bir siklda 19 soat qimirlamaydi. Bu yerda u 30 daqiqa to'xtaydi — qolgani yo'l.",'39:00 → 20:30'],
+   ['PARK',"Kuniga 10 reys uchun 16 ta avtopoyezd o'rniga 10 ta tigach va 17 ta tirkama yetadi. Qimmat tigach arzon tirkamaga almashadi.",'Tigach −38%'],
+   ['TIZIM',"Yuqoridagi koeffitsiyent jonli hisoblanmoqda: yuk bilan qaytgan reyslar ÷ jami reyslar.",'Jonli KPI']
+  ];
+  var ni=0, nT=0;
+  var elSub=document.getElementById('sub'), elTag=document.getElementById('tag'),
+      elTrans=document.getElementById('trans'), elDur=document.getElementById('dur');
+  function narrate(force){
+    var n=NARR[ni%NARR.length]; ni++;
+    elTag.textContent=n[0]; elTag.className='tag '+({'SHUTTLE':'ALMASHISH','MAGISTRAL':'HARAKAT','KUTISH':'KUTISH',
+      'HUB':'ALMASHISH','VODIY':'KUTISH','QAYTISH':'QAYTISH','LOKAL':'HARAKAT',
+      'HISOB':'TAQQOSLASH','PARK':'TAQQOSLASH','MANBA':'QAYTISH','TIZIM':'SIKL',"TO'G'RI":'HARAKAT'}[n[0]]||'SIKL');
+    elSub.textContent=n[1]; elDur.textContent=n[2];
+  }
+
+  /* ============ CHIZISH ============ */
+  var E={}; ['clk','tc','z-queue','z-load','z-ready','h-empty','h-loaded','h-out','h-wait','h-fill',
+    'd-unload','d-empty','d-swap','s-trips','s-back','s-empt','s-rate']
+    .forEach(function(k){E[k]=document.getElementById(k);});
+  var SE=[],SQ=[]; for(var si=0;si<4;si++){ SE.push(document.getElementById('src'+si));
+    SQ.push(document.getElementById('srq'+si)); }
+  var barE=document.getElementById('h-bar-e'), barL=document.getElementById('h-bar-l'), barO=document.getElementById('h-bar-o');
+
+  function draw(){
+    S.veh.forEach(function(v){
+      var f=Math.max(0,Math.min(1,(S.t-v.t0)/v.dur));
+      var p=v.p0+(v.p1-v.p0)*f, dir=(v.p1===v.p0)?v.dir:((v.p1>v.p0)?1:-1);
+      var q=posOn(v.road,p,dir);
+      v.g.setAttribute('transform','translate('+q.x.toFixed(1)+','+q.y.toFixed(1)+') rotate('+q.ang.toFixed(1)+')');
+      if(v.cargo){ v.tr.setAttribute('display',''); v.bar.setAttribute('display','');
+        v.tr.setAttribute('fill', v.cargo==='loaded'?'#2FD3C0':'#39485A');
+        v.tr.setAttribute('stroke', v.cargo==='loaded'?'#7BEFE2':'#7C90A6');
+      } else { v.tr.setAttribute('display','none'); v.bar.setAttribute('display','none'); }
+      var moving=(v.p0!==v.p1);
+      if(moving && v.lab){
+        var below=(v.road==='D')||(v.road==='H'&&dir<0)||(v.road==='K'&&dir>0);
+        v.txt.setAttribute('display','');
+        v.txt.setAttribute('x',q.x.toFixed(1));
+        v.txt.setAttribute('y',(q.y+(below?21:-17)).toFixed(1));
+        if(v.txt.textContent!==v.lab) v.txt.textContent=v.lab;
+        v.txt.setAttribute('fill', v.cargo==='loaded'?'#7FE9DC':(v.cargo?'#A3B4C6':'#7B8C9F'));
+      } else v.txt.setAttribute('display','none');
+    });
+
+    var out=FLEET-S.H.empty-S.H.loaded;
+    E['clk'].textContent=clock(S.t); E['tc'].textContent=clock(S.t);
+    E['z-queue'].textContent=S.Z.queue;
+    E['z-load'].textContent=S.Z.loadEnd===null?0:1;
+    E['z-ready'].textContent=S.Z.ready;
+    E['h-empty'].textContent=S.H.empty;
+    E['h-loaded'].textContent=S.H.loaded;
+    E['h-out'].textContent=out;
+    E['d-unload'].textContent=S.D.unload.length;
+    E['d-empty'].textContent=S.D.empty;
+    E['d-swap'].textContent=S.D.swap;
+    for(var si=0;si<S.SRC.length;si++){
+      SE[si].textContent=S.SRC[si].ready;
+      SQ[si].textContent=S.SRC[si].queue+(S.SRC[si].loadEnd===null?0:1);
+    }
+    var waiting=0; S.veh.forEach(function(v){ if(v.kind==='line'&&v.ph==='hub_hook'&&!v.cargo&&S.H.loaded===0) waiting++; });
+    E['h-wait'].textContent=waiting;
+    E['h-fill'].textContent=Math.round((S.H.empty+S.H.loaded)/FLEET*100)+'%';
+
+    var W=222;
+    var we=S.H.empty/FLEET*W, wl=S.H.loaded/FLEET*W, wo=out/FLEET*W;
+    barE.setAttribute('x',94); barE.setAttribute('width',we.toFixed(1));
+    barL.setAttribute('x',(94+we).toFixed(1)); barL.setAttribute('width',wl.toFixed(1));
+    barO.setAttribute('x',(94+we+wl).toFixed(1)); barO.setAttribute('width',wo.toFixed(1));
+
+    E['s-trips'].textContent=S.stat.trips;
+    E['s-back'].textContent=S.stat.back;
+    E['s-empt'].textContent=S.stat.empt;
+    var tot=S.stat.back+S.stat.empt;
+    E['s-rate'].textContent=(tot?Math.round(S.stat.back/tot*100):0)+'%';
+  }
+
+  /* ============ SIKL ============ */
+  var playing=true, speed=1, raf=null, HPS=0.4, lastMs=null;
+  function advance(dt){
+    S.t += dt*HPS*speed;
+    nT += dt;
+    if(nT>8){ nT=0; narrate(); }
+    processes();
+    S.veh.forEach(function(v){
+      var guard=0;
+      while(S.t-v.t0>=v.dur && guard++<12) STEP[v.kind](v);
+    });
+    draw();
+  }
+  function tickNow(){
+    var now=performance.now();
+    if(lastMs===null){ lastMs=now; return; }
+    var dt=(now-lastMs)/1000; lastMs=now;
+    if(dt>0) advance(Math.min(dt,0.25));
+  }
+  function frame(){
+    raf=null;
+    if(!playing) return;
+    tickNow();
+    raf=requestAnimationFrame(frame);
+  }
+  function start(){ if(!raf){ lastMs=performance.now(); raf=requestAnimationFrame(frame); } }
+  // ba'zi muhitlarda requestAnimationFrame tormozlanadi — kafolat uchun taymer
+  setInterval(function(){
+    if(!playing) return;
+    if(lastMs===null || performance.now()-lastMs>180) tickNow();
+    if(!raf){ raf=requestAnimationFrame(frame); }
+  },160);
+
+  var btnPlay=document.getElementById('play');
+  btnPlay.addEventListener('click',function(){
+    playing=!playing; btnPlay.textContent=playing?'▌▌ Pauza':'▶ Davom etish';
+    if(playing) start();
+  });
+  document.getElementById('rst').addEventListener('click',function(){
+    reset(); narrate(); draw();
+    if(!playing){ playing=true; btnPlay.textContent='▌▌ Pauza'; start(); }
+  });
+  [].forEach.call(document.querySelectorAll('.sp'),function(b){
+    b.addEventListener('click',function(){
+      speed=parseFloat(b.getAttribute('data-s'));
+      [].forEach.call(document.querySelectorAll('.sp'),function(x){x.className='sp';});
+      b.className='sp on';
+    });
+  });
+
+  reset(); narrate(); draw();
+  if(!window.matchMedia||!window.matchMedia('(prefers-reduced-motion: reduce)').matches) start();
+  else { playing=false; btnPlay.textContent='▶ Boshlash'; }
+})();
+</script>
+
+</body>
+</html>
