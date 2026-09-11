@@ -32,9 +32,10 @@ body{background:var(--void); color:var(--ink);
 .eyebrow{font-family:"IBM Plex Mono",monospace; font-size:11px; letter-spacing:.18em;
   text-transform:uppercase; color:var(--move); margin-bottom:18px}
 h1{font-family:Anton,Impact,sans-serif; font-weight:400;
-  font-size:clamp(52px,9.5vw,126px); line-height:.86; letter-spacing:.005em;
+  font-size:clamp(48px,8.6vw,112px); line-height:1.02; letter-spacing:.005em;
   margin:0; text-transform:uppercase; text-wrap:balance}
 h1 em{font-style:normal; color:var(--wait)}
+h1 br{line-height:1.02}
 .deck{font-size:18px; color:var(--ink2); max-width:60ch; margin:26px 0 0}
 .stat-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
   gap:2px; margin-top:38px; background:var(--line); border:1px solid var(--line)}
@@ -230,7 +231,7 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
   <div class="sec-head">
     <span class="sec-n">01</span>
     <h2>Tizim · jonli simulyatsiya</h2>
-    <p class="sec-dek">Bitta mashina emas — butun tizim bir vaqtda. 100 tirkamali park, 3 shuttle tigach, 10 magistral tigach, 1 to'g'ridan-to'g'ri va 3 lokal tigach — 17 ta transport bir vaqtda. Qaytish yuki hubga emas, Toshkentdagi qabul nuqtasiga tushiriladi. Toshkent–Vodiy oralig'i 10 soat. Har bir transport ustida nima qilayotgani yozilib turadi. Vaqt muhrlari haqiqiy: navbat ~8 soat, yuklash 1 soat, tushirish 10 soat, tirkama almashtirish 15 daqiqa.</p>
+    <p class="sec-dek">Bitta mashina emas — butun tizim bir vaqtda. 100 tirkamali park, 3 shuttle tigach, 10 magistral tigach, 1 to'g'ridan-to'g'ri va 3 lokal tigach — 17 ta transport bir vaqtda. Qaytish yuki hubga emas, Toshkentdagi qabul nuqtasiga tushiriladi. Toshkent–Vodiy oralig'i 10 soat. Har bir transport ustida nima qilayotgani yozilib turadi. Vaqt muhrlari haqiqiy: navbat ~8 soat, yuklash 1 soat, tushirish 10 soat, tirkama almashtirish 15 daqiqa, hub ↔ zavod 40 daqiqa.</p>
   </div>
 
   <div class="sim">
@@ -262,7 +263,7 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
         <line x1="1003" y1="520" x2="1003" y2="540" stroke="#2A3846" stroke-width="2"/>
 
         <text x="256" y="212" fill="#8FA0B2" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1">6 km</text>
-        <text x="256" y="227" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="10">13 daq</text>
+        <text x="256" y="227" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="10">40 daq</text>
         <text x="256" y="241" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="10">SHUTTLE</text>
         <text x="470" y="436" text-anchor="middle" fill="#8FA0B2" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="1">286 km · 10 soat · MAGISTRAL</text>
         <text x="640" y="78" text-anchor="middle" fill="#2FD3C0" font-family="IBM Plex Mono, monospace" font-size="10" letter-spacing="1.5" opacity=".8">TO'G'RIDAN-TO'G'RI · HUB ORALIG'ISIZ</text>
@@ -423,13 +424,13 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
     <div class="rt">
       <div class="rt-n c-hub">MARSHRUT 1</div>
       <h4>Shuttle · Hub ↔ Zavod</h4>
-      <p>6 km qatnov. Zavodni tirkama bilan ta'minlaydi va yuklanganini olib chiqadi. Zavod oldida doimiy 5 ta smenli tirkama aylanadi.</p>
+      <p>6 km, shahar tirbandligida 40 daqiqa. Zavodni tirkama bilan ta'minlaydi va yuklanganini olib chiqadi. Zavod oldida doimiy 5 ta smenli tirkama aylanadi.</p>
       <ol>
-        <li>Hubdan bo'sh tirkama bilan zavodga<em>13 daq</em></li>
+        <li>Hubdan bo'sh tirkama bilan zavodga<em>40 daq</em></li>
         <li>Tirkama ochiriladi, navbat raqami olinadi<em>15 daq</em></li>
-        <li>Yuklangan tirkamani ulab hubga<em>13 daq</em></li>
+        <li>Yuklangan tirkamani ulab hubga<em>40 daq</em></li>
         <li>Hubda ochiriladi, yangi bo'sh ulanadi<em>15 daq</em></li>
-        <li>Sikl yopildi<em>56 daq</em></li>
+        <li>Sikl yopildi<em>1 s 50 daq</em></li>
       </ol>
     </div>
 
@@ -441,7 +442,7 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
         <li>Tigach zavod oldida kutib turadi<em>—</em></li>
         <li>Yuklangan tirkama to'g'ridan ulanadi<em>15 daq</em></li>
         <li>Viloyatga yo'lga chiqadi<em>10 soat</em></li>
-        <li>Hub oralig'i o'tkazib yuborildi<em>−43 daq</em></li>
+        <li>Hub oralig'i o'tkazib yuborildi<em>−1 s 10 daq</em></li>
       </ol>
     </div>
 
@@ -470,77 +471,96 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
 <section>
   <div class="sec-head">
     <span class="sec-n">03</span>
-    <h2>39 soat ⟶ 20 soat 30 daqiqa</h2>
-    <p class="sec-dek">Bir xil yuk, bir xil masofa (286 km, 10 soat), bir xil zavod navbati. Farq faqat shunda: kim kutadi — tigachmi yoki tirkamami.</p>
+    <h2>Bir yukning to'liq yo'li</h2>
+    <p class="sec-dek">Bir xil yuk, bir xil masofa (286 km, 10 soat), bir xil zavod navbati. Drop &amp; hook tomonida hub oralig'i, navbat va yuklash ham to'liq ko'rsatilgan — ular yo'qolmaydi, faqat magistral tigachdan tirkamaga o'tadi.</p>
   </div>
 
   <div class="scroller">
-  <svg viewBox="0 0 1040 300" role="img" aria-label="Klassik va drop and hook modellarining vaqt taqqoslashi">
+  <svg viewBox="0 0 1040 340" role="img" aria-label="Klassik va drop and hook: to'liq yo'l taqqoslashi">
     <line x1="150" y1="46" x2="1010" y2="46" stroke="#222D38" stroke-width="1"/>
     <g font-family="IBM Plex Mono, monospace" font-size="10" fill="#4C5B6C">
       <text x="150.0" y="36" text-anchor="middle">0</text>
-      <text x="354.8" y="36" text-anchor="middle">10 s</text>
-      <text x="559.5" y="36" text-anchor="middle">20 s</text>
-      <text x="764.3" y="36" text-anchor="middle">30 s</text>
-      <text x="969.0" y="36" text-anchor="middle">40 s</text>
+      <text x="354.8" y="36" text-anchor="middle">10 soat</text>
+      <text x="559.5" y="36" text-anchor="middle">20 soat</text>
+      <text x="764.3" y="36" text-anchor="middle">30 soat</text>
+      <text x="969.0" y="36" text-anchor="middle">40 soat</text>
     </g>
     <g stroke="#1A222C" stroke-width="1">
-      <line x1="354.8" y1="46" x2="354.8" y2="250"/>
-      <line x1="559.5" y1="46" x2="559.5" y2="250"/>
-      <line x1="764.3" y1="46" x2="764.3" y2="250"/>
-      <line x1="969.0" y1="46" x2="969.0" y2="250"/>
+      <line x1="354.8" y1="46" x2="354.8" y2="270"/>
+      <line x1="559.5" y1="46" x2="559.5" y2="270"/>
+      <line x1="764.3" y1="46" x2="764.3" y2="270"/>
+      <line x1="969.0" y1="46" x2="969.0" y2="270"/>
     </g>
-    <text x="0" y="76" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="16">KLASSIK</text>
-    <text x="0" y="92" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9.5">TIRKAMA ULANGAN</text>
-    <text x="0" y="106" fill="#F0A339" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">39 s 00 daq</text>
-    <rect x="150.0" y="62" width="163.8" height="34" fill="#F0A339"/>
-    <text x="231.9" y="84" text-anchor="middle" fill="#2B1C05" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">NAVBAT 8 s</text>
-    <rect x="313.8" y="62" width="20.5" height="34" fill="#E4352B"/>
-    <rect x="334.3" y="62" width="204.8" height="34" fill="#2FD3C0"/>
-    <text x="436.7" y="84" text-anchor="middle" fill="#06110F" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">YO'L 10 s</text>
-    <rect x="539.0" y="62" width="204.8" height="34" fill="#F0A339"/>
-    <text x="641.4" y="84" text-anchor="middle" fill="#2B1C05" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">TUSHIRISH 10 s</text>
-    <rect x="743.8" y="62" width="204.8" height="34" fill="#2FD3C0"/>
-    <text x="846.2" y="84" text-anchor="middle" fill="#06110F" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">YO'L 10 s</text>
-    <text x="150" y="118" fill="#F0A339" font-family="IBM Plex Mono, monospace" font-size="10.5" letter-spacing=".5">TIGACH 19 SOAT QIMIRLAMAYDI · SUTKADA 0,62 REYS</text>
-    <text x="0" y="168" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="16">D&amp;H</text>
-    <text x="0" y="184" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9.5">MAGISTRAL TIGACH</text>
-    <text x="0" y="198" fill="#2FD3C0" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">20 s 30 daq</text>
-    <rect x="150.0" y="154" width="5.1" height="34" fill="#7B95FF"/>
-    <rect x="155.1" y="154" width="204.8" height="34" fill="#2FD3C0"/>
-    <text x="257.5" y="176" text-anchor="middle" fill="#06110F" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">YO'L 10 s</text>
-    <rect x="359.9" y="154" width="5.1" height="34" fill="#7B95FF"/>
-    <rect x="365.0" y="154" width="204.8" height="34" fill="#2FD3C0"/>
-    <text x="467.4" y="176" text-anchor="middle" fill="#06110F" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">YO'L 10 s</text>
-    <rect x="569.8" y="154" width="5.1" height="34" fill="#7B95FF" opacity=".4"/>
-    <rect x="574.9" y="154" width="204.8" height="34" fill="#2FD3C0" opacity=".4"/>
-    <text x="677.3" y="176" text-anchor="middle" fill="#06110F" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">2-REYS</text>
-    <rect x="779.6" y="154" width="5.1" height="34" fill="#7B95FF" opacity=".4"/>
-    <rect x="784.8" y="154" width="204.8" height="34" fill="#2FD3C0" opacity=".4"/>
-    <text x="887.1" y="176" text-anchor="middle" fill="#06110F" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">2-REYS</text>
-    <text x="150" y="208" fill="#2FD3C0" font-family="IBM Plex Mono, monospace" font-size="10.5" letter-spacing=".5">TIGACH 30 DAQIQA TO'XTAYDI · SUTKADA 1,17 REYS</text>
-    <line x1="948.6" y1="54" x2="948.6" y2="240" stroke="#F0A339" stroke-width="1" stroke-dasharray="4 4"/>
-    <text x="940.6" y="236" text-anchor="end" fill="#F0A339" font-family="IBM Plex Mono, monospace" font-size="10.5">KLASSIK 1-REYSNI ENDI TUGATDI</text>
-    <text x="150" y="266" fill="#E9EFF5" font-family="IBM Plex Mono, monospace" font-size="12.5" letter-spacing=".4">Klassik tigach 1 reys qilgan vaqtda drop &amp; hook tigachi <tspan fill="#2FD3C0" font-weight="600">1,90 reys</tspan> qiladi.</text>
-    <text x="150" y="284" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="10.5">Navbat 8 soat va tushirish 10 soat ikkalasida ham bor — ular yo'qolmadi, tirkamaga ko'chdi.</text>
+    <text x="0" y="72" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="15">KLASSIK</text>
+    <text x="0" y="87" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9">BIR TIGACH HAMMASINI</text>
+    <text x="0" y="100" fill="#F0A339" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">39 s 00 daq</text>
+    <rect x="150.0" y="60" width="163.8" height="32" fill="#F0A339"/>
+    <text x="231.9" y="81" text-anchor="middle" fill="#2B1C05" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">NAVBAT 8 s</text>
+    <rect x="313.8" y="60" width="20.5" height="32" fill="#E4352B"/>
+    <rect x="334.3" y="60" width="204.8" height="32" fill="#2FD3C0"/>
+    <text x="436.7" y="81" text-anchor="middle" fill="#06110F" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">YO'L 10 s</text>
+    <rect x="539.0" y="60" width="204.8" height="32" fill="#F0A339"/>
+    <text x="641.4" y="81" text-anchor="middle" fill="#2B1C05" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">TUSHIRISH 10 s</text>
+    <rect x="743.8" y="60" width="204.8" height="32" fill="#2FD3C0"/>
+    <text x="846.2" y="81" text-anchor="middle" fill="#06110F" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">YO'L 10 s</text>
+    <text x="150" y="110" fill="#F0A339" font-family="IBM Plex Mono, monospace" font-size="10.5" letter-spacing=".4">39 SOATNING 19 SOATIDA TIGACH QIMIRLAMAYDI</text>
+    <text x="0" y="140" fill="#2FD3C0" font-family="IBM Plex Mono, monospace" font-size="10" letter-spacing="1.4">DROP &amp; HOOK · IKKI QISM PARALLEL</text>
+    <line x1="0" y1="148" x2="1010" y2="148" stroke="#222D38" stroke-width="1"/>
+    <text x="0" y="172" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="13">ZAVOD QISMI</text>
+    <text x="0" y="185" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9">SHUTTLE + TIRKAMA</text>
+    <text x="0" y="198" fill="#B9C6D2" font-family="IBM Plex Mono, monospace" font-size="10.5" font-weight="600">11 s 20 daq</text>
+    <rect x="150.0" y="160" width="5.1" height="30" fill="#7B95FF"/>
+    <rect x="155.1" y="160" width="13.7" height="30" fill="#2FD3C0"/>
+    <rect x="168.8" y="160" width="5.1" height="30" fill="#7B95FF"/>
+    <rect x="173.9" y="160" width="163.8" height="30" fill="#F0A339"/>
+    <text x="255.8" y="180" text-anchor="middle" fill="#2B1C05" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">NAVBAT 8 s</text>
+    <rect x="337.7" y="160" width="20.5" height="30" fill="#E4352B"/>
+    <text x="347.9" y="180" text-anchor="middle" fill="#FBE9E8" font-family="IBM Plex Mono, monospace" font-size="8.5" font-weight="600">YUK 1 s</text>
+    <rect x="358.2" y="160" width="5.1" height="30" fill="#7B95FF"/>
+    <rect x="363.3" y="160" width="13.7" height="30" fill="#2FD3C0"/>
+    <rect x="376.9" y="160" width="5.1" height="30" fill="#7B95FF"/>
+    <text x="154.1" y="207" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9.5">↑ shuttle tigach 2 s 20 daq band</text>
+    <text x="0" y="240" fill="#E9EFF5" font-family="Anton, sans-serif" font-size="13">MAGISTRAL</text>
+    <text x="0" y="253" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9">TIGACH SIKLI</text>
+    <text x="0" y="266" fill="#2FD3C0" font-family="IBM Plex Mono, monospace" font-size="10.5" font-weight="600">20 s 30 daq</text>
+    <rect x="150.0" y="228" width="5.1" height="30" fill="#7B95FF"/>
+    <rect x="155.1" y="228" width="204.8" height="30" fill="#2FD3C0"/>
+    <text x="257.5" y="248" text-anchor="middle" fill="#06110F" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">YO'L 10 s</text>
+    <rect x="359.9" y="228" width="5.1" height="30" fill="#7B95FF"/>
+    <rect x="365.0" y="228" width="204.8" height="30" fill="#2FD3C0"/>
+    <text x="467.4" y="248" text-anchor="middle" fill="#06110F" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">YO'L 10 s</text>
+    <rect x="569.8" y="228" width="5.1" height="30" fill="#7B95FF" opacity=".38"/>
+    <rect x="574.9" y="228" width="204.8" height="30" fill="#2FD3C0" opacity=".38"/>
+    <text x="677.3" y="248" text-anchor="middle" fill="#06110F" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">2-REYS</text>
+    <rect x="779.6" y="228" width="5.1" height="30" fill="#7B95FF" opacity=".38"/>
+    <rect x="784.8" y="228" width="204.8" height="30" fill="#2FD3C0" opacity=".38"/>
+    <text x="887.1" y="248" text-anchor="middle" fill="#06110F" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">2-REYS</text>
+    <line x1="382.1" y1="190" x2="382.1" y2="228" stroke="#2FD3C0" stroke-width="1" stroke-dasharray="3 3"/>
+    <circle cx="382.1" cy="228" r="3" fill="#2FD3C0"/>
+    <text x="390.1" y="222" fill="#2FD3C0" font-family="IBM Plex Mono, monospace" font-size="9">shu tirkama keyingi siklda ulanadi</text>
+    <text x="150" y="296" fill="#E9EFF5" font-family="IBM Plex Mono, monospace" font-size="12.5" letter-spacing=".4">Zavod qismi magistral bilan <tspan fill="#2FD3C0" font-weight="600">parallel</tspan> ketadi — magistral tigach 8 soatlik navbatni hech qachon ko'rmaydi.</text>
+    <text x="150" y="314" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="10.5">Bir yuk uchun: tirkama 41 s 50 daq yo'lda, shundan tigach band bo'lgani — shuttle 2 s 20 daq + magistral 20 s 30 daq.</text>
+    <text x="150" y="330" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="10.5">Klassikda esa o'sha 39 soatning hammasi bitta tigachda.</text>
   </svg>
   </div>
 
   <div class="scroller">
   <table>
-    <caption>Bir sikl · bosqichlar bo'yicha vaqt</caption>
-    <thead><tr><th>Bosqich</th><th>Klassik tigach</th><th>D&amp;H magistral tigach</th><th>D&amp;H tirkama</th></tr></thead>
+    <caption>Bir yukning to'liq yo'li · hubdagi bo'sh tirkamadan tushirilgunicha</caption>
+    <thead><tr><th>Bosqich</th><th>Klassik tigach</th><th>D&amp;H shuttle tigach</th><th>D&amp;H magistral tigach</th><th>D&amp;H tirkama</th></tr></thead>
     <tbody>
-      <tr><td class="k">Zavod parkingida navbat</td><td class="bad">8 s 00</td><td class="good">—</td><td>8 s 00</td></tr>
-      <tr><td class="k">Yuklash</td><td class="bad">1 s 00</td><td class="good">—</td><td>1 s 00</td></tr>
-      <tr><td class="k">Tirkama almashtirish (×2–4)</td><td>—</td><td>0 s 30</td><td>1 s 30</td></tr>
-      <tr><td class="k">Shuttle qatnovi (6 km ×2)</td><td>—</td><td>—</td><td>0 s 26</td></tr>
-      <tr><td class="k">Magistral yo'l (286 km ×2)</td><td class="good">20 s 00</td><td class="good">20 s 00</td><td>20 s 00</td></tr>
-      <tr><td class="k">Distributorda tushirish</td><td class="bad">10 s 00</td><td class="good">—</td><td>10 s 00</td></tr>
+      <tr><td class="k">Hubda va zavodda almashish (×4)</td><td>—</td><td>1 s 00</td><td>—</td><td>1 s 00</td></tr>
+      <tr><td class="k">Hub ↔ Zavod qatnovi (6 km ×2)</td><td>—</td><td>1 s 20</td><td>—</td><td>1 s 20</td></tr>
+      <tr><td class="k">Zavod parkingida navbat</td><td class="bad">8 s 00</td><td class="good">—</td><td class="good">—</td><td>8 s 00</td></tr>
+      <tr><td class="k">Yuklash</td><td class="bad">1 s 00</td><td class="good">—</td><td class="good">—</td><td>1 s 00</td></tr>
+      <tr><td class="k">Magistralda almashish (×2)</td><td>—</td><td>—</td><td>0 s 30</td><td>0 s 30</td></tr>
+      <tr><td class="k">Magistral yo'l (286 km ×2)</td><td class="good">20 s 00</td><td>—</td><td class="good">20 s 00</td><td>20 s 00</td></tr>
+      <tr><td class="k">Distributorda tushirish</td><td class="bad">10 s 00</td><td class="good">—</td><td class="good">—</td><td>10 s 00</td></tr>
     </tbody>
     <tfoot>
-      <tr><td>Jami sikl</td><td class="bad">39 s 00</td><td class="good">20 s 30</td><td>40 s 41</td></tr>
-      <tr><td>Harakatda o'tgan ulush</td><td class="bad">51%</td><td class="good">98%</td><td>—</td></tr>
+      <tr><td>Jami</td><td class="bad">39 s 00</td><td class="good">2 s 20</td><td class="good">20 s 30</td><td>41 s 50</td></tr>
+      <tr><td>Harakatda o'tgan ulush</td><td class="bad">51%</td><td>57%</td><td class="good">98%</td><td>—</td></tr>
+      <tr><td>Bir yukka tigach-soat</td><td class="bad">39 s 00</td><td colspan="2" class="good">22 s 50 daq (shuttle + magistral)</td><td>—</td></tr>
     </tfoot>
   </table>
   </div>
@@ -559,16 +579,16 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
     <caption>Kunlik reys soniga qarab kerakli texnika</caption>
     <thead><tr><th>Kuniga reys</th><th>Klassik avtopoyezd</th><th>D&amp;H magistral tigach</th><th>D&amp;H shuttle tigach</th><th>D&amp;H tigach jami</th><th>D&amp;H tirkama</th><th>Tigach farqi</th></tr></thead>
     <tbody>
-      <tr><td class="k">6</td><td>10</td><td>5</td><td>1</td><td class="good">6</td><td>10</td><td class="good">−4</td></tr>
-      <tr><td class="k">10</td><td>16</td><td>9</td><td>1</td><td class="good">10</td><td>17</td><td class="good">−6</td></tr>
-      <tr><td class="k">14</td><td>23</td><td>12</td><td>2</td><td class="good">14</td><td>24</td><td class="good">−9</td></tr>
-      <tr><td class="k">20</td><td>32</td><td>17</td><td>2</td><td class="good">19</td><td>34</td><td class="good">−13</td></tr>
+      <tr><td class="k">6</td><td>10</td><td>5</td><td>2</td><td class="good">7</td><td>11</td><td class="good">−3</td></tr>
+      <tr><td class="k">10</td><td>16</td><td>9</td><td>2</td><td class="good">11</td><td>17</td><td class="good">−5</td></tr>
+      <tr><td class="k">14</td><td>23</td><td>12</td><td>3</td><td class="good">15</td><td>24</td><td class="good">−8</td></tr>
+      <tr><td class="k">20</td><td>32</td><td>17</td><td>4</td><td class="good">21</td><td>35</td><td class="good">−11</td></tr>
     </tbody>
   </table>
   </div>
 
   <div class="note">
-    <p><strong>Savdo shundan iborat: qimmat tigachni arzon tirkamaga almashtirasiz.</strong> Kuniga 10 reysda 16 ta avtopoyezd o'rniga 10 ta tigach va 17 ta tirkama kerak. Tigach soni 38% ga kamayadi, tirkama bittaga ko'payadi.</p>
+    <p><strong>Savdo shundan iborat: qimmat tigachni arzon tirkamaga almashtirasiz.</strong> Kuniga 10 reysda 16 ta avtopoyezd o'rniga 11 ta tigach va 17 ta tirkama kerak. Tigach soni 31% ga kamayadi, tirkama bittaga ko'payadi.</p>
     <p>Yillik hisobda: 10 reys/kun = 3 650 reys. Klassik modelda tigachlar shu reyslarda <strong>69 350 soat</strong> qimirlamay turadi — bu 8 ta tigachning butun yillik ish vaqti. Drop &amp; hook bu soatlarni tirkamaga ko'chiradi.</p>
   </div>
 
@@ -603,7 +623,7 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
     <text x="960" y="128" text-anchor="middle" fill="#78879A" font-family="IBM Plex Mono, monospace" font-size="9.5">FARG'ONA / NAMANGAN / ANDIJON</text>
 
     <text x="130" y="94" text-anchor="middle" fill="#B9C6D2" font-family="IBM Plex Mono, monospace" font-size="10.5">6 km</text>
-    <text x="130" y="108" text-anchor="middle" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9.5">13 daq</text>
+    <text x="130" y="108" text-anchor="middle" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9.5">40 daq</text>
 
     <text x="625" y="94" text-anchor="middle" fill="#B9C6D2" font-family="IBM Plex Mono, monospace" font-size="10.5">286–370 km · har uchala manzilga ~10 soat</text>
     <text x="625" y="108" text-anchor="middle" fill="#4C5B6C" font-family="IBM Plex Mono, monospace" font-size="9.5">Qamchiq dovoni, nazorat postlari va to'xtashlar bilan</text>
@@ -617,7 +637,7 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
     <caption>Hubdan manzillargacha</caption>
     <thead><tr><th>Yo'nalish</th><th>Masofa</th><th>Yo'l vaqti</th><th>Bugungi qaytish koeffitsiyenti</th></tr></thead>
     <tbody>
-      <tr><td class="k">Hub → Coca-Cola zavodi</td><td>6 km</td><td>13 daqiqa</td><td>—</td></tr>
+      <tr><td class="k">Hub → Coca-Cola zavodi</td><td>6 km</td><td>40 daqiqa</td><td>—</td></tr>
       <tr><td class="k">Hub → Farg'ona</td><td>286 km</td><td>~10 soat</td><td class="bad">17,0%</td></tr>
       <tr><td class="k">Hub → Namangan</td><td>302 km</td><td>~10 soat</td><td class="good">42,6%</td></tr>
       <tr><td class="k">Hub → Andijon</td><td>~370 km</td><td>~10 soat</td><td class="bad">15,2%</td></tr>
@@ -789,15 +809,15 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
       <tr><td class="k">Zavod → Hub (6 km)</td><td>—</td><td>ichki operatsiya, alohida hisoblanmaydi</td></tr>
       <tr><td class="k">Hub → Andijon (magistral)</td><td>—</td><td>butun masofa</td></tr>
       <tr><td class="k">Magistral tigach vaqti</td><td class="good">20 s 30 daq</td><td class="good">20 s 30 daq</td></tr>
-      <tr><td class="k">Qo'shimcha shuttle vaqti</td><td class="good">0</td><td>0 s 56 daq (+4,5%)</td></tr>
-      <tr><td class="k">Tejaladigan vaqt</td><td class="good">43 daqiqa</td><td>—</td></tr>
+      <tr><td class="k">Qo'shimcha shuttle vaqti</td><td class="good">0</td><td>1 s 50 daq (+9%)</td></tr>
+      <tr><td class="k">Tejaladigan vaqt</td><td class="good">1 s 10 daq</td><td>—</td></tr>
       <tr><td class="k">Zavod navbatiga bog'liqlik</td><td class="bad">bor — tigach kutadi</td><td class="good">yo'q — bufer ajratadi</td></tr>
     </tbody>
   </table>
   </div>
   <div class="note">
-    <p><strong>Asosiy jumla: mijoz tarifi ikkala usulda ham bir xil.</strong> Hub oralig'i alohida sotilmaydi — u ichki operatsiya. Uning narxi bir yukka <strong>56 daqiqa shuttle vaqti</strong>, ya'ni magistral tigachning 20 s 30 daqiqasiga nisbatan <strong>+4,5%</strong> tigach-soat. Buning evaziga magistral tigach 8 soatlik zavod navbatidan butunlay xalos bo'ladi.</p>
-    <p>Usul A tezroq (43 daqiqa), lekin u faqat viloyat tigachi to'g'ri vaqtda zavodda bo'lsa ishlaydi. Usul B har doim ishlaydi — shuning uchun asosiy usul B, A esa bonus.</p>
+    <p><strong>Asosiy jumla: mijoz tarifi ikkala usulda ham bir xil.</strong> Hub oralig'i alohida sotilmaydi — u ichki operatsiya. Uning narxi bir yukka <strong>1 soat 50 daqiqa shuttle vaqti</strong>, ya'ni magistral tigachning 20 s 30 daqiqasiga nisbatan <strong>+9%</strong> tigach-soat. Buning evaziga magistral tigach 8 soatlik zavod navbatidan butunlay xalos bo'ladi.</p>
+    <p>Usul A tezroq (1 soat 10 daqiqa), lekin u faqat viloyat tigachi to'g'ri vaqtda zavodda bo'lsa ishlaydi. Usul B har doim ishlaydi — shuning uchun asosiy usul B, A esa bonus.</p>
   </div>
 
   <h3>C · Qaytish yuki manbalari — tarif</h3>
@@ -872,7 +892,7 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
         <li>Namangan qo'shiladi, keyin Andijon<em>—</em></li>
         <li>Ikki smenali haydovchi rejimi<em>—</em></li>
         <li>Tirkama parki kengaytiriladi<em>17 → 26</em></li>
-        <li>Tigach parki qisqartiriladi<em>−38%</em></li>
+        <li>Tigach parki qisqartiriladi<em>−31%</em></li>
       </ol>
     </div>
   </div>
@@ -893,7 +913,7 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
 
 <footer>
   Vaqt konstantalari: zavod parkingida navbat 8 soat · yuklash 1 soat · distributorda tushirish 10 soat · tirkama almashtirish 15 daqiqa.<br>
-  Masofalar: hub ↔ zavod 6 km / 13 daqiqa · hub ↔ Vodiy 286 km Farg'ona / 302 km Namangan / ~370 km Andijon — har uchalasi <b>~10 soat</b> (Qamchiq dovoni, nazorat postlari va to'xtashlar bilan).<br>
+  Masofalar: hub ↔ zavod 6 km / 40 daqiqa (shahar tirbandligi) · hub ↔ Vodiy 286 km Farg'ona / 302 km Namangan / ~370 km Andijon — har uchalasi <b>~10 soat</b> (Qamchiq dovoni, nazorat postlari va to'xtashlar bilan).<br>
   Qaytish koeffitsiyenti raqamlari 78 790 reysli reyestrdan (2025-10-01 → 2026-09-10). Park hisobi 24 soatlik rejim uchun.
 </footer>
 
@@ -934,7 +954,7 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
   }
 
   /* ============ VAQT KONSTANTALARI (soat) ============ */
-  var SWAP=0.25, SHUT=13/60, LOAD=1.0, UNLOAD=10.0, LINE=10.0, LOCAL=0.5, KLOAD=1.5;
+  var SWAP=0.25, SHUT=40/60, LOAD=1.0, UNLOAD=10.0, LINE=10.0, LOCAL=0.5, KLOAD=1.5;
   var QMAX=8, FLEET=100, TJ=0.4107, TSPUR=0.20;   // TJ = Toshkent tarmog'i H yo'lidagi nuqtasi
 
   /* ============ HOLAT ============ */
@@ -1230,11 +1250,11 @@ footer{margin-top:80px; padding-top:22px; border-top:1px solid var(--line);
   /* ============ RIVOYAT ============ */
   var NARR=[
    ['TIZIM',"Zavod oldida navbat, hubda bufer, vodiyda tushirish — uchalasi bir vaqtda ishlaydi. Hech biri ikkinchisini kutmaydi.",'Uzluksiz rejim'],
-   ['SHUTTLE',"Uchta shuttle tigach 6 km yo'lda uzluksiz qatnaydi: zavodga bo'sh tirkama olib boradi, yuklanganini olib qaytadi. Bo'sh yurish yo'q.",'Har qatnov 13 daqiqa'],
+   ['SHUTTLE',"Uchta shuttle tigach 6 km yo'lda uzluksiz qatnaydi: zavodga bo'sh tirkama olib boradi, yuklanganini olib qaytadi. Bo'sh yurish yo'q.",'Har qatnov 40 daqiqa'],
    ['KUTISH',"Navbatdagi 8 soat yo'qolmadi — u tirkamaga ko'chdi. Tigach bu vaqtda boshqa reys qilmoqda.",'Navbat ~8 soat'],
    ['HUB',"Hub 100 tirkamali park. U zavod ritmini magistral ritmidan ajratadi: zavod kechasi yuklasa ham, tirkama ertalabgacha tayyor turadi.",'Bufer'],
    ['MAGISTRAL',"O'nta magistral tigach hubdan yuklangan tirkamani oladi va 15 daqiqada yo'lga chiqadi. Ular zavod navbatini umuman ko'rmaydi.",'286 km · 10 soat'],
-   ["TO'G'RI","Agar viloyat tigachi tirkama yuklanayotgan payt zavodda bo'lsa — hub oralig'i tushib qoladi. Yuqoridagi yo'l ana shu.",'43 daqiqa tejaladi'],
+   ["TO'G'RI","Agar viloyat tigachi tirkama yuklanayotgan payt zavodda bo'lsa — hub oralig'i tushib qoladi. Yuqoridagi yo'l ana shu.",'1 soat 10 daqiqa tejaladi'],
    ['VODIY',"Distributorda tushirish 10 soat davom etadi. Tigach uni kutmaydi: tirkamani qoldirib, tayyor turganini ulab ketadi.",'Tushirish 10 soat'],
    ['QAYTISH',"To'rtta manba — kafel zavodi, Chortoq mineral suvi, to'qimachilik va sement — tirkamani tigach kelishidan avval yuklaydi. Shuning uchun qaytish yukini olish 15 daqiqa turadi, 10 soat emas.",'4 ta manba'],
    ['LOKAL',"Uchta lokal tigach manbalar bilan svop maydoni orasida aylanadi: bo'sh tirkamani manbaga olib boradi, oldindan yuklanganini svopga olib keladi.",'30 daqiqa'],
