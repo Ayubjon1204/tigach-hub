@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Toshkent hub · tirkama almashtirish (drop &amp; hook): hub joylashuvi, bir yukning to'liq yo'li, jonli simulyatsiya, xavflar, narxlar va qaytish yuki bozori.">
+<meta name="description" content="Toshkent hub · tirkama almashtirish (drop &amp; hook): hub joylashuvi, bir yukning to'liq yo'li, jonli simulyatsiya, xavflar, narx tuzilmasi va qaytish yuki bozori.">
 <meta property="og:title" content="Tigach Kutmaydi">
-<meta property="og:description" content="Tirkama almashtirish modeli — Toshkent hub, jonli simulyatsiya, qaytish yuki bozori.">
+<meta property="og:description" content="Tirkama almashtirish modeli — Toshkent hub, jonli simulyatsiya, narx tuzilmasi.">
 <meta property="og:type" content="website">
 <style>html{color-scheme:dark}body{margin:0}img{max-width:100%}</style>
 <title>Tigach Kutmaydi</title>
@@ -711,28 +711,66 @@ td input[type=number]::-webkit-inner-spin-button{opacity:.35}
 <section id="s5">
   <div class="sec-head">
     <span class="sec-n">05</span>
-    <h2>Marshrut iqtisodi</h2>
-    <p class="sec-dek">Bugun amalda ketayotgan borish narxlari va reyestrdagi kelish narxlari. Drop &amp; hook da mijoz tarifi o'zgarmaydi — zavod ↔ hub qatnovi ichki xarajatga aylanadi.</p>
+    <h2>Narx tuzilmasi</h2>
+    <p class="sec-dek">An'anaviy usulda bitta tarif, bitta tigach. Drop &amp; hook da narx ikkiga bo'linadi: shuttle qatnovi va magistral. Magistral tigach zavod navbatini kutmagani uchun arzonroq turadi.</p>
   </div>
 
   <div class="scroller">
   <table>
-    <caption>Bir FURA reysi · so'm · borish — joriy amaldagi narx · kelish — reyestr medianasi</caption>
-    <thead><tr><th>Yo'nalish</th><th>Borish — Toshkentdan</th><th>Kelish — Toshkentga</th><th>To'liq sikl</th><th>Bo'sh qaytsa yo'qoladi</th><th>12 oylik reys</th></tr></thead>
+    <caption>An'anaviy narxlar · bir FURA reysi · so'm</caption>
+    <thead><tr><th>Yo'nalish</th><th>Borish — Toshkentdan</th><th>Kelish — Toshkentga</th><th>To'liq sikl</th></tr></thead>
     <tbody>
-      <tr><td class="k">Toshkent ↔ Andijon</td><td class="k">4 600 000</td><td>2 992 800</td><td class="good">7 592 800</td><td class="bad">2 992 800</td><td>3 682 / 558</td></tr>
-      <tr><td class="k">Toshkent ↔ Farg'ona</td><td class="k">4 000 000</td><td>2 525 000</td><td class="good">6 525 000</td><td class="bad">2 525 000</td><td>4 513 / 768</td></tr>
-      <tr><td class="k">Toshkent ↔ Namangan</td><td class="k">4 200 000</td><td>1 400 000*</td><td>5 600 000</td><td>1 400 000</td><td>4 475 / 1 907</td></tr>
+      <tr><td class="k">Toshkent ↔ Andijon</td><td class="k">4 600 000</td><td>2 992 800</td><td class="good">7 592 800</td></tr>
+      <tr><td class="k">Toshkent ↔ Farg'ona</td><td class="k">4 000 000</td><td>2 525 000</td><td class="good">6 525 000</td></tr>
+      <tr><td class="k">Toshkent ↔ Namangan</td><td class="k">4 200 000</td><td>1 400 000*</td><td>5 600 000</td></tr>
     </tbody>
-    <tfoot><tr><td>O'rtacha (hajm bo'yicha vaznli)</td><td class="k">4 245 000</td><td>2 741 200</td><td>6 986 200</td><td class="bad">2 741 200</td><td>12 670 / 3 233</td></tr></tfoot>
+    <tfoot><tr><td>O'rtacha (hajm bo'yicha vaznli)</td><td class="k">4 245 000</td><td>2 741 200</td><td>6 986 200</td></tr></tfoot>
   </table>
   </div>
-  <p style="margin-top:10px; color:var(--muted); font-size:12.5px"><strong style="color:var(--ink2)">Manbalar ikki xil.</strong> Borish narxlari — bugun amalda ketayotgan summalar. Kelish narxlari — reyestrdan olingan mediana va ular tasdiqlanishi kerak. * Namangan kelish narxi atigi 6 ta yozuvdan hisoblangan, unga tayanmang: hajmi eng katta (1 907 reys) bo'lsa ham narxlar bazaga kiritilmagan.</p>
+  <p style="margin-top:10px; color:var(--muted); font-size:12.5px">Borish narxlari — bugun amalda ketayotgan summalar. Kelish narxlari — reyestr medianasi, tasdiqlash kerak. * Namangan kelishi atigi 6 ta yozuvdan.</p>
 
-  </section>
+  <h3>Drop &amp; hook narxi — ikki variant</h3>
+  <div class="scroller">
+  <table>
+    <caption>Gipoteza: shuttle 800 000 so'm · magistral an'anaviydan 500 000 arzon</caption>
+    <thead><tr>
+      <th>Yo'nalish</th><th>An'anaviy</th>
+      <th>Shuttle<br>zavod → hub</th><th>Magistral<br>hub → viloyat</th>
+      <th>Variant B jami<br>hub orqali</th><th>Variant A<br>zavodda ulab ketsa</th>
+    </tr></thead>
+    <tbody>
+      <tr><td class="k">Toshkent → Andijon</td><td>4 600 000</td><td class="c-hub">800 000</td><td>4 100 000</td><td class="bad">4 900 000</td><td class="good">4 100 000</td></tr>
+      <tr><td class="k">Toshkent → Farg'ona</td><td>4 000 000</td><td class="c-hub">800 000</td><td>3 500 000</td><td class="bad">4 300 000</td><td class="good">3 500 000</td></tr>
+      <tr><td class="k">Toshkent → Namangan</td><td>4 200 000</td><td class="c-hub">800 000</td><td>3 700 000</td><td class="bad">4 500 000</td><td class="good">3 700 000</td></tr>
+    </tbody>
+    <tfoot><tr><td>An'anaviyga nisbatan farq</td><td>—</td><td colspan="2">—</td><td class="bad">+300 000</td><td class="good">−500 000</td></tr></tfoot>
+  </table>
+  </div>
 
+  <div class="note w">
+    <p><strong>Diqqat: hub orqali yuborish an'anaviydan 300 000 so'm qimmatroq.</strong> Shuttle 800 000 turadi, magistral esa atigi 500 000 arzonlashadi. Foyda faqat <strong>zavodda to'g'ridan-to'g'ri ulab ketilgan</strong> reyslardan keladi — u yerda shuttle umuman ishlatilmaydi va 500 000 sof tejaladi.</p>
+  </div>
 
-
+  <h3>Qaysi nisbatda foydali bo'ladi</h3>
+  <div class="scroller">
+  <table>
+    <caption>Toshkent → Andijon misolida · aralash rejim</caption>
+    <thead><tr><th>To'g'ridan-to'g'ri ulushi</th><th>O'rtacha narx</th><th>An'anaviyga nisbatan</th><th>1 000 reysda</th></tr></thead>
+    <tbody>
+      <tr><td class="k">0% — hammasi hub orqali</td><td>4 900 000</td><td class="bad">+300 000</td><td class="bad">+300 mln</td></tr>
+      <tr><td class="k">25%</td><td>4 700 000</td><td class="bad">+100 000</td><td class="bad">+100 mln</td></tr>
+      <tr style="background:var(--surface)"><td class="k">37,5% — TENGLIK NUQTASI</td><td class="k">4 600 000</td><td class="k">0</td><td class="k">0</td></tr>
+      <tr><td class="k">50%</td><td>4 500 000</td><td class="good">−100 000</td><td class="good">−100 mln</td></tr>
+      <tr><td class="k">75%</td><td>4 300 000</td><td class="good">−300 000</td><td class="good">−300 mln</td></tr>
+      <tr><td class="k">100% — hammasi zavodda ulanadi</td><td class="good">4 100 000</td><td class="good">−500 000</td><td class="good">−500 mln</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="note">
+    <p><strong>Asosiy shart: reyslarning kamida 37,5% i zavodda to'g'ridan-to'g'ri ulanishi kerak.</strong> Undan past bo'lsa model narx bo'yicha yutqazadi va faqat vaqt tejami qoladi. Shuning uchun viloyat tigachlarining zavod oldiga o'z vaqtida kelishi — dispetcherning asosiy KPI si.</p>
+    <p>Hub orqali yuborish esa <strong>zarur bo'lganda ishlaydigan zaxira</strong>: tigach yo'q bo'lsa, tirkama hubda kutadi va zavod to'xtamaydi. 300 000 so'm — shu kafolatning narxi.</p>
+  </div>
+</section>
 
 <!-- ============== 06 QAYTISH YUKI BOZORI ============== -->
 <section id="s6">
@@ -786,6 +824,24 @@ td input[type=number]::-webkit-inner-spin-button{opacity:.35}
   <div class="note">
     <p><strong>Bu avvalgi xulosani ag'daradi.</strong> Reyestrga qarab «Andijonda qaytish yuki yo'q» degan edik — chunki bazada Andijondan atigi 558 reys ko'rinadi. Amalda Andijon eng katta qaytish bozoriga ega: <strong>kuniga 75 reys</strong>, o'rtacha narxi <strong>4 010 666 so'm</strong> — hatto chiqish narxidan ham yuqori yo'nalishlar bor.</p>
     <p>Ya'ni muammo yuk yo'qligida emas. Muammo shundaki, tigach distributorda 10 soat tushirishni kutadi va bu yukni olishga ulgurmaydi. <strong>Tirkama almashtirish aynan shuni hal qiladi:</strong> yuk oldindan tirkamaga yuklanadi, tigach 15 daqiqada ulab ketadi.</p>
+  </div>
+
+  <h3>Qaytish yuki qayerdan keladi</h3>
+  <div class="scroller">
+  <table>
+    <caption>Ikki manba · kunlik reys</caption>
+    <thead><tr><th>Manba</th><th>Kunlik</th><th>Yillik</th><th>Izoh</th></tr></thead>
+    <tbody>
+      <tr><td class="k">Kafolatlangan — o'sha distributorning o'zidan</td><td class="good">11,9</td><td class="good">3 801</td><td style="text-align:left">Zavoddan yetkazilgan yuklarning 30% i o'sha distributordan zavodga qaytadi</td></tr>
+      <tr><td class="k">Ochiq bozor — boshqa jo'natuvchilar</td><td class="good">148</td><td class="good">47 064</td><td style="text-align:left">Yuqoridagi yuk turlari jadvali</td></tr>
+      <tr><td class="k">Bizning chiqish hajmi — chegara</td><td>39,8</td><td>12 670</td><td style="text-align:left">Bundan ko'p qaytara olmaymiz</td></tr>
+    </tbody>
+    <tfoot><tr><td>Qaytish uchun kerak bo'lgan qo'shimcha</td><td>27,9</td><td>8 869</td><td style="text-align:left">Bozordagi 148 tadan olinadi — yetarlicha bor</td></tr></tfoot>
+  </table>
+  </div>
+  <div class="note">
+    <p><strong>30% allaqachon kafolatlangan.</strong> Zavoddan distributorga ketgan har 10 yukdan 3 tasi o'sha distributorning o'zidan zavodga qaytadi — bu oqim shartnoma bilan bog'langan va uni topish kerak emas. Qolgan 70% ni ochiq bozordan olish kerak, va u yerda kuniga 148 ta yuk turibdi.</p>
+    <p>Ya'ni <strong>100% qaytish koeffitsiyenti nazariy emas, texnik jihatdan erishiladigan maqsad</strong>: 30% kafolatlangan + 70% bozordan.</p>
   </div>
 
   <div class="note w">
