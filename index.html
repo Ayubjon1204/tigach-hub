@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="Toshkent hub · tirkama almashtirish (drop &amp; hook): hub joylashuvi, bir yukning to'liq yo'li, jonli simulyatsiya, xavflar va mijozlar kesimida narx hisobi.">
+<meta name="description" content="Toshkent hub · tirkama almashtirish (drop &amp; hook): hub joylashuvi, bir yukning to'liq yo'li, jonli simulyatsiya, xavflar va marshrut narxlari.">
 <meta property="og:title" content="Tigach Kutmaydi">
-<meta property="og:description" content="Tirkama almashtirish modeli — Toshkent hub, jonli simulyatsiya, narx kalkulyatori.">
+<meta property="og:description" content="Tirkama almashtirish modeli — Toshkent hub, jonli simulyatsiya.">
 <meta property="og:type" content="website">
 <style>html{color-scheme:dark}body{margin:0}img{max-width:100%}</style>
 <title>Tigach Kutmaydi</title>
@@ -444,27 +444,7 @@ td input[type=number]::-webkit-inner-spin-button{opacity:.35}
   </svg>
   </div>
 
-  <div class="scroller">
-  <table>
-    <caption>Bir yukning to'liq yo'li · hubdagi bo'sh tirkamadan tushirilgunicha</caption>
-    <thead><tr><th>Bosqich</th><th>Klassik tigach</th><th>D&amp;H shuttle tigach</th><th>D&amp;H magistral tigach</th><th>D&amp;H tirkama</th></tr></thead>
-    <tbody>
-      <tr><td class="k">Hubda va zavodda almashish (×4)</td><td>—</td><td>1 s 00</td><td>—</td><td>1 s 00</td></tr>
-      <tr><td class="k">Hub ↔ Zavod qatnovi (6 km ×2)</td><td>—</td><td>1 s 20</td><td>—</td><td>1 s 20</td></tr>
-      <tr><td class="k">Zavod parkingida navbat</td><td class="bad">8 s 00</td><td class="good">—</td><td class="good">—</td><td class="good">3 s 00</td></tr>
-      <tr><td class="k">Yuklash</td><td class="bad">1 s 00</td><td class="good">—</td><td class="good">—</td><td>1 s 00</td></tr>
-      <tr><td class="k">Magistralda almashish (×2)</td><td>—</td><td>—</td><td>0 s 30</td><td>0 s 30</td></tr>
-      <tr><td class="k">Magistral yo'l (286 km ×2)</td><td class="good">20 s 00</td><td>—</td><td class="good">20 s 00</td><td>20 s 00</td></tr>
-      <tr><td class="k">Distributorda tushirish</td><td class="bad">10 s 00</td><td class="good">—</td><td class="good">—</td><td>10 s 00</td></tr>
-    </tbody>
-    <tfoot>
-      <tr><td>Jami</td><td class="bad">39 s 00</td><td class="good">2 s 20</td><td class="good">20 s 30</td><td>36 s 50</td></tr>
-      <tr><td>Harakatda o'tgan ulush</td><td class="bad">51%</td><td>57%</td><td class="good">98%</td><td>—</td></tr>
-      <tr><td>BIR YUKKA TIGACH VAQTI</td><td class="bad">39 s 00</td><td colspan="2" class="good">22 s 50 daq · 1,71 barobar kam</td><td>—</td></tr>
-    </tfoot>
-  </table>
-  </div>
-</section>
+  </section>
 
 <!-- ============== 01 SIMULYATOR ============== -->
 <section id="s3">
@@ -731,100 +711,26 @@ td input[type=number]::-webkit-inner-spin-button{opacity:.35}
   <div class="sec-head">
     <span class="sec-n">05</span>
     <h2>Marshrut iqtisodi</h2>
-    <p class="sec-dek">Avval bugungi an'anaviy narxlar, keyin drop &amp; hook da nima o'zgarishi. Shuttle qatnovi mijozga chiqarilmaydi — u ichki xarajatga aylanadi. Tariflar reyestrdan (mediana, narx reyslarning 6,3% ida qayd etilgan).</p>
+    <p class="sec-dek">Bugun amalda ketayotgan borish narxlari va reyestrdagi kelish narxlari. Drop &amp; hook da mijoz tarifi o'zgarmaydi — zavod ↔ hub qatnovi ichki xarajatga aylanadi.</p>
   </div>
 
-  <h3>A · An'anaviy usul — bugungi narxlar</h3>
   <div class="scroller">
   <table>
-    <caption>Bir FURA reysi · so'm · mediana · borish va kelish alohida</caption>
-    <thead><tr><th>Yo'nalish</th><th>Borish — Toshkentdan</th><th>Kelish — Toshkentga</th><th>To'liq sikl</th><th>Bo'sh qaytsa yo'qoladi</th><th>Yozuv</th></tr></thead>
+    <caption>Bir FURA reysi · so'm · borish — joriy amaldagi narx · kelish — reyestr medianasi</caption>
+    <thead><tr><th>Yo'nalish</th><th>Borish — Toshkentdan</th><th>Kelish — Toshkentga</th><th>To'liq sikl</th><th>Bo'sh qaytsa yo'qoladi</th><th>12 oylik reys</th></tr></thead>
     <tbody>
-      <tr><td class="k">Toshkent ↔ Andijon</td><td>3 500 000</td><td>2 992 800</td><td class="good">6 492 800</td><td class="bad">2 992 800</td><td>151 / 150</td></tr>
-      <tr><td class="k">Toshkent ↔ Farg'ona</td><td>3 200 000</td><td>2 525 000</td><td class="good">5 725 000</td><td class="bad">2 525 000</td><td>472 / 565</td></tr>
-      <tr><td class="k">Toshkent ↔ Namangan</td><td>3 050 000</td><td>1 400 000*</td><td>4 450 000</td><td>1 400 000</td><td>96 / 6*</td></tr>
+      <tr><td class="k">Toshkent ↔ Andijon</td><td class="k">4 600 000</td><td>2 992 800</td><td class="good">7 592 800</td><td class="bad">2 992 800</td><td>3 682 / 558</td></tr>
+      <tr><td class="k">Toshkent ↔ Farg'ona</td><td class="k">4 000 000</td><td>2 525 000</td><td class="good">6 525 000</td><td class="bad">2 525 000</td><td>4 513 / 768</td></tr>
+      <tr><td class="k">Toshkent ↔ Namangan</td><td class="k">4 200 000</td><td>1 400 000*</td><td>5 600 000</td><td>1 400 000</td><td>4 475 / 1 907</td></tr>
     </tbody>
-    <tfoot><tr><td>O'rtacha</td><td>3 200 000</td><td>2 741 200</td><td>5 941 200</td><td>2 741 200</td><td>719 / 721</td></tr></tfoot>
+    <tfoot><tr><td>O'rtacha (hajm bo'yicha vaznli)</td><td class="k">4 245 000</td><td>2 741 200</td><td>6 986 200</td><td class="bad">2 741 200</td><td>12 670 / 3 233</td></tr></tfoot>
   </table>
   </div>
-  <p style="margin-top:10px; color:var(--muted); font-size:12.5px">* Namangan kelish narxi atigi 6 ta yozuvdan — tayanmaslik kerak. Hajmi esa eng katta (1 907 reys), narxlar bazaga kiritilmagan.</p>
+  <p style="margin-top:10px; color:var(--muted); font-size:12.5px"><strong style="color:var(--ink2)">Manbalar ikki xil.</strong> Borish narxlari — bugun amalda ketayotgan summalar. Kelish narxlari — reyestrdan olingan mediana va ular tasdiqlanishi kerak. * Namangan kelish narxi atigi 6 ta yozuvdan hisoblangan, unga tayanmang: hajmi eng katta (1 907 reys) bo'lsa ham narxlar bazaga kiritilmagan.</p>
 
-  <h3>B · Drop &amp; hook — nima o'zgaradi</h3>
-  <div class="scroller">
-  <table>
-    <caption>Toshkent → Andijon misolida · bir yuk</caption>
-    <thead><tr><th>Modda</th><th>An'anaviy (hozir)</th><th>Drop &amp; hook</th><th>Izoh</th></tr></thead>
-    <tbody>
-      <tr><td class="k">Mijozdan olinadigan borish narxi</td><td>3 500 000</td><td>3 500 000</td><td style="text-align:left">O'zgarmaydi</td></tr>
-      <tr><td class="k">Mijozdan olinadigan kelish narxi</td><td>2 992 800</td><td>2 992 800</td><td style="text-align:left">O'zgarmaydi</td></tr>
-      <tr><td class="k">Zavod ↔ hub qatnovi</td><td>yo'q</td><td class="c-hub">ICHKI XARAJAT</td><td style="text-align:left">Mijozga alohida chiqarilmaydi</td></tr>
-      <tr><td class="k">Shuttle vaqti — bir yukka</td><td>—</td><td>2 s 20 daq</td><td style="text-align:left">Magistralga nisbatan +9% tigach-soat</td></tr>
-      <tr><td class="k">Zavod navbati kimda</td><td class="bad">Tigachda · 8 soat</td><td class="good">Tirkamada · 3 soat</td><td style="text-align:left">Tigach umuman kutmaydi</td></tr>
-      <tr><td class="k">Magistral tigach sikli</td><td class="bad">39 s 00</td><td class="good">20 s 30</td><td style="text-align:left">Bitta magistral tigachning sikli</td></tr>
-      <tr><td class="k">Bir yukka TIGACH VAQTI jami</td><td class="bad">39 s 00</td><td class="good">22 s 50</td><td style="text-align:left">shuttle 2 s 20 + magistral 20 s 30 = 1,71×</td></tr>
-    </tbody>
-  </table>
-  </div>
-  <div class="note">
-    <p><strong>Shuttle — tarif emas, xarajat.</strong> An'anaviy usulda mijoz bitta tarif to'laydi va tigach zavod navbatida 8 soat turadi. Drop &amp; hook da mijoz o'sha tarifni to'laydi, lekin hub qatnovi o'z ichki operatsiyangizga aylanadi: bir yukka <strong>2 soat 20 daqiqa shuttle vaqti</strong>. Shuttle vaqtini ham qo'shganda bir yukka tigach vaqti 39 soatdan <strong>22 soat 50 daqiqaga</strong> tushadi — 16 soat 10 daqiqa kam.</p>
-  </div>
+  </section>
 
-  <h3>C · Mijozlar kesimida — hajm bazadan, narxni siz kiritasiz</h3>
-  <p style="font-size:13px; color:var(--muted)">Reys hajmlari 12 oylik reyestrdan. Narx katakchalarini o'zgartiring — jadval o'zi qayta hisoblaydi.</p>
-  <div class="scroller">
-  <table id="cliTbl">
-    <caption>12 oylik hajm · narx so'mda · yillik daromad avtomatik</caption>
-    <thead><tr>
-      <th>Mijoz</th><th>Borish reys</th><th>Kelish reys</th>
-      <th>Borish narxi</th><th>Kelish narxi</th>
-      <th>Borish daromadi</th><th>Kelish daromadi</th><th>Jami</th>
-    </tr></thead>
-    <tbody>
-      <tr data-o="5537" data-b="590"><td class="k">CocaCola</td><td>5 537</td><td>590</td><td><input type="number" class="po" value="3200000" step="50000"></td><td><input type="number" class="pb" value="2741200" step="50000"></td><td class="vo num">—</td><td class="vb num">—</td><td class="vt num">—</td></tr>
-      <tr data-o="2156" data-b="126"><td class="k">RC Cola</td><td>2 156</td><td>126</td><td><input type="number" class="po" value="3200000" step="50000"></td><td><input type="number" class="pb" value="2741200" step="50000"></td><td class="vo num">—</td><td class="vb num">—</td><td class="vt num">—</td></tr>
-      <tr data-o="840" data-b="2"><td class="k">Gorilla</td><td>840</td><td>2</td><td><input type="number" class="po" value="3200000" step="50000"></td><td><input type="number" class="pb" value="2741200" step="50000"></td><td class="vo num">—</td><td class="vb num">—</td><td class="vt num">—</td></tr>
-      <tr data-o="470" data-b="4"><td class="k">Mantella</td><td>470</td><td>4</td><td><input type="number" class="po" value="3200000" step="50000"></td><td><input type="number" class="pb" value="2741200" step="50000"></td><td class="vo num">—</td><td class="vb num">—</td><td class="vt num">—</td></tr>
-      <tr data-o="436" data-b="2"><td class="k">Gazablok</td><td>436</td><td>2</td><td><input type="number" class="po" value="3200000" step="50000"></td><td><input type="number" class="pb" value="2741200" step="50000"></td><td class="vo num">—</td><td class="vb num">—</td><td class="vt num">—</td></tr>
-      <tr data-o="430" data-b="0"><td class="k">Coca Cola PRO</td><td>430</td><td>0</td><td><input type="number" class="po" value="3200000" step="50000"></td><td><input type="number" class="pb" value="2741200" step="50000"></td><td class="vo num">—</td><td class="vb num">—</td><td class="vt num">—</td></tr>
-      <tr data-o="342" data-b="2"><td class="k">Global Textile VST</td><td>342</td><td>2</td><td><input type="number" class="po" value="3200000" step="50000"></td><td><input type="number" class="pb" value="2741200" step="50000"></td><td class="vo num">—</td><td class="vb num">—</td><td class="vt num">—</td></tr>
-      <tr data-o="315" data-b="580"><td class="k">Chortoq</td><td>315</td><td class="good">580</td><td><input type="number" class="po" value="3200000" step="50000"></td><td><input type="number" class="pb" value="2741200" step="50000"></td><td class="vo num">—</td><td class="vb num">—</td><td class="vt num">—</td></tr>
-      <tr data-o="273" data-b="14"><td class="k">Milano</td><td>273</td><td>14</td><td><input type="number" class="po" value="3200000" step="50000"></td><td><input type="number" class="pb" value="2741200" step="50000"></td><td class="vo num">—</td><td class="vb num">—</td><td class="vt num">—</td></tr>
-      <tr data-o="1871" data-b="1913"><td class="k">Boshqalar</td><td>1 871</td><td>1 913</td><td><input type="number" class="po" value="3200000" step="50000"></td><td><input type="number" class="pb" value="2741200" step="50000"></td><td class="vo num">—</td><td class="vb num">—</td><td class="vt num">—</td></tr>
-    </tbody>
-    <tfoot><tr><td>JAMI</td><td>12 670</td><td>3 233</td><td>—</td><td>—</td><td class="to num">—</td><td class="tb num">—</td><td class="tt num">—</td></tr></tfoot>
-  </table>
-  </div>
-  <div class="note w" id="cliNote">
-    <p><strong>Bo'sh qaytish narxi.</strong> Hozir 12 670 borishga atigi 3 233 kelish to'g'ri keladi. Qolgan <strong>9 437</strong> reys bo'sh qaytadi — kiritilgan kelish narxi bo'yicha bu yiliga <span id="lostVal" class="bad">—</span>.</p>
-  </div>
-</section>
 
-<script>
-(function(){
-  var t=document.getElementById('cliTbl'); if(!t) return;
-  function fmt(n){ return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,' '); }
-  function mlrd(n){ return (n/1e9).toFixed(2).replace('.',',')+' mlrd so\'m'; }
-  function calc(){
-    var to=0,tb=0;
-    [].forEach.call(t.querySelectorAll('tbody tr'),function(r){
-      var o=+r.getAttribute('data-o'), b=+r.getAttribute('data-b');
-      var po=+r.querySelector('.po').value||0, pb=+r.querySelector('.pb').value||0;
-      var vo=o*po, vb=b*pb;
-      r.querySelector('.vo').textContent=fmt(vo/1e6)+' mln';
-      r.querySelector('.vb').textContent=fmt(vb/1e6)+' mln';
-      r.querySelector('.vt').textContent=fmt((vo+vb)/1e6)+' mln';
-      to+=vo; tb+=vb;
-    });
-    t.querySelector('.to').textContent=mlrd(to);
-    t.querySelector('.tb').textContent=mlrd(tb);
-    t.querySelector('.tt').textContent=mlrd(to+tb);
-    var avgPb=0,n=0;
-    [].forEach.call(t.querySelectorAll('.pb'),function(i){ avgPb+=+i.value||0; n++; });
-    document.getElementById('lostVal').textContent=mlrd(9437*(avgPb/n));
-  }
-  t.addEventListener('input',calc); calc();
-})();
-</script>
 
 
 <footer>
